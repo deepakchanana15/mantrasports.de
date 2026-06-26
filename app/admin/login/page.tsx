@@ -1,18 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import type { Metadata } from 'next'
 import { loginSchema, type LoginInput } from '@/lib/validations/auth'
 import { Eye, EyeOff, AlertCircle } from 'lucide-react'
 
-// Note: metadata export is handled in the parent layout for client components.
-// For SEO of this page, see app/admin/layout.tsx
-
-export default function AdminLoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') ?? '/admin/dashboard'
@@ -171,5 +167,13 @@ export default function AdminLoginPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }
