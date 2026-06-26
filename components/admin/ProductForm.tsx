@@ -74,7 +74,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
   const [images, setImages] = useState<ImageEntry[]>(
     product?.images
       ?.sort((a, b) => a.sortOrder - b.sortOrder)
-      .map((img) => ({
+      ?.map((img) => ({
         url: img.url,
         altText: img.altText ?? '',
         isPrimary: img.isPrimary,
