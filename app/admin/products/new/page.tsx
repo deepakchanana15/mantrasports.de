@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import { prisma } from '@/lib/db/prisma'
-import { ProductFormLoader } from '@/components/admin/ProductFormLoader'
+import { ProductForm } from '@/components/admin/ProductForm'
 
 export const metadata: Metadata = { title: 'Add Product' }
 
@@ -30,7 +30,7 @@ export default async function NewProductPage() {
         Add New Product
       </h1>
 
-      <ProductFormLoader categories={categories} />
+      <ProductForm categories={categories} />
     </div>
   )
 }

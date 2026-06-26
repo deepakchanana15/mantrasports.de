@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ChevronRight } from 'lucide-react'
 import { prisma } from '@/lib/db/prisma'
-import { ProductFormLoader } from '@/components/admin/ProductFormLoader'
+import { ProductForm } from '@/components/admin/ProductForm'
 
 export const metadata: Metadata = { title: 'Edit Product' }
 
@@ -42,7 +42,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         Edit Product
       </h1>
 
-      <ProductFormLoader product={product} categories={categories} />
+      <ProductForm product={product} categories={categories} />
     </div>
   )
 }

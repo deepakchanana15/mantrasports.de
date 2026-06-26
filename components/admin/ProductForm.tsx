@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { Upload, X, GripVertical, Star, Plus } from 'lucide-react'
 import { createProduct, updateProduct } from '@/lib/actions/products'
@@ -59,6 +59,9 @@ const sectionCls = 'rounded border border-neutral-200 bg-white p-6'
 // ── Main Form ─────────────────────────────────────────────────────────────────
 
 export function ProductForm({ product, categories }: ProductFormProps) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
   const router = useRouter()
   const isEdit = !!product
 
@@ -163,6 +166,10 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       setError(err instanceof Error ? err.message : 'An error occurred. Please try again.')
       setSubmitting(false)
     }
+  }
+
+  if (!mounted) {
+    return <div className="py-12 text-center text-sm text-neutral-400">Loading form…</div>
   }
 
   return (
