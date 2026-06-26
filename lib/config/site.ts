@@ -144,6 +144,7 @@ export const DEFAULT_CATEGORIES = [
 // ─── Default Site Settings ────────────────────────────────────────────────────
 
 export const DEFAULT_SITE_SETTINGS = {
+  hero_image_url: '',
   site_name: 'Mantra Sports DE',
   site_tagline: 'Ohne Grenzen spielen.',
   site_description: SITE_CONFIG.description,

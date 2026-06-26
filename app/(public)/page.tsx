@@ -1,1093 +1,162 @@
-'use client'
+import type { Metadata } from 'next'
+import { prisma } from '@/lib/db/prisma'
+import { HomePageClient } from '@/components/home/HomePageClient'
+import type { CategoryDisplay, ProductDisplay, HeroProduct } from '@/components/home/HomePageClient'
 
-import { useState } from 'react'
-import Link from 'next/link'
-import {
-  Star,
-  ShieldCheck,
-  Truck,
-  Award,
-  Headphones,
-  RefreshCw,
-  Package,
-  ChevronRight,
-  ArrowRight,
-  Quote,
-  Mail,
-} from 'lucide-react'
-
-// ── Placeholder product data (Phase 3 replaces with DB) ───────────────────────
-const PLACEHOLDER_PRODUCTS = [
-  {
-    id: '1',
-    name: 'Magnitude Legend Schläger',
-    brand: 'Magnitude Serie',
-    price: 1299,
-    comparePrice: 1699,
-    badge: 'SPARE 24%',
-    badgeColor: '#e85d1a',
-    stars: 5,
-    reviews: 12,
-    href: '/products/magnitude-legend',
-    emoji: '🏏',
-    tab: 'neue',
-  },
-  {
-    id: '2',
-    name: 'Cobra Ultimate Schläger',
-    brand: 'Cobra Serie',
-    price: 388,
-    comparePrice: 550,
-    badge: 'BESTSELLER',
-    badgeColor: '#111111',
-    stars: 5,
-    reviews: 34,
-    href: '/products/cobra-ultimate',
-    emoji: '🏏',
-    tab: 'bestseller',
-  },
-  {
-    id: '3',
-    name: 'Raptor Batting Handschuhe',
-    brand: 'Raptor Serie',
-    price: 188,
-    comparePrice: 230,
-    badge: 'NEU',
-    badgeColor: '#059669',
-    stars: 4,
-    reviews: 8,
-    href: '/products/raptor-gloves',
-    emoji: '🧤',
-    tab: 'neue',
-  },
-  {
-    id: '4',
-    name: 'Magnitude Batting Pads',
-    brand: 'Magnitude Serie',
-    price: 138,
-    comparePrice: 190,
-    badge: 'BELIEBT',
-    badgeColor: '#7c3aed',
-    stars: 5,
-    reviews: 21,
-    href: '/products/magnitude-pads',
-    emoji: '🛡️',
-    tab: 'bestseller',
-  },
-  {
-    id: '5',
-    name: 'Englisches Weidenholz Pro',
-    brand: 'Premium Serie',
-    price: 1899,
-    comparePrice: null,
-    badge: 'ENGLISH WILLOW',
-    badgeColor: '#92400e',
-    stars: 5,
-    reviews: 5,
-    href: '/products/english-willow-pro',
-    emoji: '🏏',
-    tab: 'willow',
-  },
-  {
-    id: '6',
-    name: 'Heritage Willow Reserve',
-    brand: 'Heritage Serie',
-    price: 2499,
-    comparePrice: null,
-    badge: 'LIMITIERT',
-    badgeColor: '#be185d',
-    stars: 5,
-    reviews: 3,
-    href: '/products/heritage-willow',
-    emoji: '🏏',
-    tab: 'willow',
-  },
-  {
-    id: '7',
-    name: 'Defender Helm',
-    brand: 'Defender Serie',
-    price: 149,
-    comparePrice: 199,
-    badge: 'SALE',
-    badgeColor: '#e85d1a',
-    stars: 4,
-    reviews: 16,
-    href: '/products/defender-helmet',
-    emoji: '⛑️',
-    tab: 'sale',
-  },
-  {
-    id: '8',
-    name: 'Mantra Cricketball 6er Pack',
-    brand: 'Match Serie',
-    price: 79,
-    comparePrice: 110,
-    badge: 'SALE',
-    badgeColor: '#e85d1a',
-    stars: 4,
-    reviews: 44,
-    href: '/products/cricket-balls-6pack',
-    emoji: '🔴',
-    tab: 'sale',
-  },
-]
-
-const TABS = [
-  { key: 'neue', label: 'Neue Arrivals' },
-  { key: 'bestseller', label: 'Bestseller' },
-  { key: 'willow', label: 'Englisches Weidenholz' },
-  { key: 'sale', label: 'Im Angebot' },
-]
-
-const CATEGORIES = [
-  { name: 'Cricketschläger', count: 9, emoji: '🏏', href: '/categories/cricket-bats' },
-  { name: 'Bälle', count: 4, emoji: '🔴', href: '/categories/balls' },
-  { name: 'Schutzausrüstung', count: 6, emoji: '🛡️', href: '/categories/protective-gear' },
-  { name: 'Handschuhe', count: 5, emoji: '🧤', href: '/categories/accessories' },
-  { name: 'Sporttaschen', count: 3, emoji: '🎒', href: '/categories/accessories' },
-  { name: 'Individuelle Bekleidung', count: null, emoji: '👕', href: '/categories/custom-apparel' },
-]
-
-const TRUST_ITEMS = [
-  { icon: Truck, text: 'Kostenloser Versand ab €100' },
-  { icon: ShieldCheck, text: 'Sichere Zahlung & Datenschutz' },
-  { icon: RefreshCw, text: '30 Tage Rückgaberecht' },
-  { icon: Award, text: 'Authentische Premium-Qualität' },
-  { icon: Headphones, text: 'Persönlicher Kundenservice' },
-]
-
-const WHY_ITEMS = [
-  {
-    icon: Award,
-    title: 'Premium Qualität',
-    text: 'Jeder Schläger handgefertigt aus dem besten englischen Weidenholz. Handwerkskunst, die du auf dem Spielfeld spürst.',
-  },
-  {
-    icon: Package,
-    title: 'Großhandel & B2B',
-    text: 'Flexible Großhandelspreise für Vereine, Schulen und Händler. Partnerschaft, die skaliert.',
-  },
-  {
-    icon: Truck,
-    title: 'EU-weiter Versand',
-    text: 'Schnelle Lieferung in alle EU-Länder. Kostenloser Versand ab €100 Bestellwert.',
-  },
-  {
-    icon: Headphones,
-    title: 'Expertenberatung',
-    text: 'Unser Expertenteam hilft dir, die perfekte Ausrüstung für dein Spielniveau zu finden.',
-  },
-]
-
-const REVIEWS = [
-  {
-    name: 'Rahul M.',
-    location: 'München, DE',
-    rating: 5,
-    text: 'Absolut beeindruckende Qualität! Der Magnitude Legend schlägt sich wie ein Profigerät. Lieferung war schnell und die Verpackung perfekt. Klare Empfehlung!',
-    product: 'Magnitude Legend Schläger',
-  },
-  {
-    name: 'Priya S.',
-    location: 'Berlin, DE',
-    rating: 5,
-    text: 'Endlich eine deutsche Anlaufstelle für Cricket! Die Raptor Handschuhe passen perfekt und die Qualität ist auf Weltklasse-Niveau. Werde definitiv wieder bestellen.',
-    product: 'Raptor Batting Handschuhe',
-  },
-  {
-    name: 'Arjun K.',
-    location: 'Frankfurt, DE',
-    rating: 5,
-    text: 'Als Vereinskapitän bestelle ich regelmäßig für unser Team. Mantra Sports DE ist zuverlässig, die Großhandelspreise sind fair und der Service ist top.',
-    product: 'Teambestellung — Schutzausrüstung',
-  },
-]
-
-function formatPrice(n: number) {
-  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 }).format(n)
+export const metadata: Metadata = {
+  title: 'Mantra Sports DE — Premium Cricket Ausrüstung',
+  description:
+    'Premium Cricketschläger, Schutzausrüstung, Teamkleidung und Zubehör bei Mantra Sports Deutschland. Großhandel & B2B-Anfragen willkommen.',
 }
 
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex" aria-label={`${rating} von 5 Sternen`}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className="h-3.5 w-3.5"
-          fill={i < rating ? '#e85d1a' : 'none'}
-          stroke={i < rating ? '#e85d1a' : '#D0CFC8'}
-        />
-      ))}
-    </div>
-  )
+function toDisplay(p: {
+  id: string
+  name: string
+  slug: string
+  price: { toNumber(): number } | null
+  salePrice: { toNumber(): number } | null
+  category: { name: string } | null
+  images: Array<{ url: string; altText: string | null }>
+}): ProductDisplay {
+  return {
+    id: p.id,
+    name: p.name,
+    brand: p.category?.name ?? '',
+    slug: p.slug,
+    price: p.price ? p.price.toNumber() : null,
+    salePrice: p.salePrice ? p.salePrice.toNumber() : null,
+    imageUrl: p.images[0]?.url ?? null,
+    imageAlt: p.images[0]?.altText ?? p.name,
+  }
 }
 
-function ProductCard({ product }: { product: typeof PLACEHOLDER_PRODUCTS[0] }) {
+const productSelect = {
+  id: true,
+  name: true,
+  slug: true,
+  price: true,
+  salePrice: true,
+  category: { select: { name: true } },
+  images: {
+    where: { isPrimary: true },
+    take: 1,
+    select: { url: true, altText: true },
+  },
+} as const
+
+export default async function HomePage() {
+  let heroImageUrl = ''
+  let heroProduct: HeroProduct | null = null
+  let categories: CategoryDisplay[] = []
+  let tabProducts = {
+    neue: [] as ProductDisplay[],
+    bestseller: [] as ProductDisplay[],
+    willow: [] as ProductDisplay[],
+    sale: [] as ProductDisplay[],
+  }
+
+  try {
+    const [heroSetting, cats, newArrivals, bestsellers, batProds, saleProds, featured] =
+      await Promise.all([
+        prisma.siteSetting.findUnique({ where: { key: 'hero_image_url' } }),
+
+        prisma.category.findMany({
+          orderBy: { sortOrder: 'asc' },
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            imageUrl: true,
+            _count: { select: { products: { where: { status: 'ACTIVE' } } } },
+            products: {
+              where: { status: 'ACTIVE' },
+              take: 1,
+              orderBy: { createdAt: 'desc' },
+              select: {
+                images: {
+                  where: { isPrimary: true },
+                  take: 1,
+                  select: { url: true },
+                },
+              },
+            },
+          },
+        }),
+
+        prisma.product.findMany({
+          where: { status: 'ACTIVE', isNewArrival: true },
+          take: 4,
+          orderBy: { createdAt: 'desc' },
+          select: productSelect,
+        }),
+
+        prisma.product.findMany({
+          where: { status: 'ACTIVE', isBestSeller: true },
+          take: 4,
+          orderBy: { createdAt: 'desc' },
+          select: productSelect,
+        }),
+
+        prisma.product.findMany({
+          where: { status: 'ACTIVE', category: { slug: 'cricket-bats' } },
+          take: 4,
+          orderBy: { createdAt: 'desc' },
+          select: productSelect,
+        }),
+
+        prisma.product.findMany({
+          where: { status: 'ACTIVE', NOT: { salePrice: null } },
+          take: 4,
+          orderBy: { createdAt: 'desc' },
+          select: productSelect,
+        }),
+
+        prisma.product.findFirst({
+          where: { status: 'ACTIVE', isFeatured: true },
+          select: {
+            name: true,
+            slug: true,
+            price: true,
+            images: { where: { isPrimary: true }, take: 1, select: { url: true } },
+          },
+        }),
+      ])
+
+    heroImageUrl = heroSetting?.value ?? ''
+
+    categories = cats.map((cat) => ({
+      id: cat.id,
+      name: cat.name,
+      slug: cat.slug,
+      imageUrl: cat.imageUrl ?? cat.products[0]?.images[0]?.url ?? null,
+      productCount: cat._count.products,
+    }))
+
+    tabProducts = {
+      neue: newArrivals.map(toDisplay),
+      bestseller: bestsellers.map(toDisplay),
+      willow: batProds.map(toDisplay),
+      sale: saleProds.map(toDisplay),
+    }
+
+    if (featured) {
+      heroProduct = {
+        name: featured.name,
+        slug: featured.slug,
+        price: featured.price ? featured.price.toNumber() : null,
+        imageUrl: featured.images[0]?.url ?? null,
+      }
+    }
+  } catch {
+    // DB unavailable — render with placeholder / static data
+  }
+
   return (
-    <Link
-      href={product.href}
-      className="group flex flex-col"
-      style={{ border: '1px solid #E0DFDB', background: '#ffffff' }}
-    >
-      {/* Image area */}
-      <div
-        className="relative flex items-center justify-center overflow-hidden"
-        style={{ background: '#F8F7F4', height: '260px' }}
-      >
-        <span className="select-none text-7xl">{product.emoji}</span>
-
-        {/* Badge */}
-        {product.badge && (
-          <span
-            className="absolute left-3 top-3 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white"
-            style={{ background: product.badgeColor }}
-          >
-            {product.badge}
-          </span>
-        )}
-
-        {/* Hover overlay */}
-        <div
-          className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{ background: 'rgba(17,17,17,0.6)' }}
-        >
-          <span
-            className="border px-5 py-2 font-display text-[13px] font-semibold uppercase tracking-widest text-white"
-            style={{ borderColor: 'white' }}
-          >
-            Anfrage stellen
-          </span>
-        </div>
-      </div>
-
-      {/* Info */}
-      <div className="flex flex-1 flex-col p-4" style={{ borderTop: '1px solid #E0DFDB' }}>
-        <p
-          className="mb-1 text-[10px] font-semibold uppercase tracking-[0.15em]"
-          style={{ color: '#6B6B6B' }}
-        >
-          {product.brand}
-        </p>
-        <h3
-          className="mb-2 flex-1 font-display text-[16px] font-semibold uppercase leading-tight tracking-[0.02em]"
-          style={{ color: '#111111' }}
-        >
-          {product.name}
-        </h3>
-
-        <div className="mb-3 flex items-center gap-2">
-          <StarRating rating={product.stars} />
-          <span className="text-[11px]" style={{ color: '#6B6B6B' }}>({product.reviews})</span>
-        </div>
-
-        <div className="flex items-baseline gap-2">
-          <span
-            className="font-display text-[20px] font-semibold"
-            style={{ color: '#e85d1a' }}
-          >
-            {formatPrice(product.price)}
-          </span>
-          {product.comparePrice && (
-            <span
-              className="text-[13px] line-through"
-              style={{ color: '#A0A0A0' }}
-            >
-              {formatPrice(product.comparePrice)}
-            </span>
-          )}
-        </div>
-      </div>
-    </Link>
-  )
-}
-
-export default function HomePage() {
-  const [activeTab, setActiveTab] = useState('neue')
-  const [email, setEmail] = useState('')
-  const [newsletterSent, setNewsletterSent] = useState(false)
-
-  const filteredProducts = PLACEHOLDER_PRODUCTS.filter((p) => p.tab === activeTab)
-
-  return (
-    <div className="overflow-x-hidden bg-white">
-
-      {/* ══════════════════════════════════════════════════════════════
-          HERO — 2-column split layout
-      ══════════════════════════════════════════════════════════════ */}
-      <section
-        aria-labelledby="hero-heading"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          minHeight: '88vh',
-          borderBottom: '1px solid #E0DFDB',
-        }}
-      >
-        {/* Left — Text content */}
-        <div
-          className="flex flex-col justify-center"
-          style={{
-            padding: '80px 60px 80px 80px',
-            borderRight: '1px solid #E0DFDB',
-          }}
-        >
-          {/* Tag pill */}
-          <span
-            className="mb-7 inline-flex items-center gap-2 self-start rounded-[2px] px-[14px] py-[6px] font-display text-[11px] font-semibold uppercase tracking-[0.18em] text-white"
-            style={{ background: '#e85d1a' }}
-          >
-            🏏 Neu in Deutschland
-          </span>
-
-          {/* H1 */}
-          <h1
-            id="hero-heading"
-            className="mb-6 font-display font-bold uppercase leading-[0.93] tracking-[-0.01em]"
-            style={{
-              fontSize: 'clamp(52px, 7vw, 88px)',
-              color: '#111111',
-            }}
-          >
-            OHNE{' '}
-            <span style={{ color: '#e85d1a' }}>GRENZEN</span>
-            <br />
-            SPIELEN
-          </h1>
-
-          {/* Sub-headline */}
-          <p
-            className="mb-10 max-w-[420px] text-[16px] font-light leading-[1.7]"
-            style={{ color: '#6B6B6B' }}
-          >
-            Premium Cricketschläger, Schutzausrüstung und Teamkleidung — direkt nach Deutschland
-            geliefert. Vertraut von Spielern in ganz Europa.
-          </p>
-
-          {/* CTAs */}
-          <div className="mb-14 flex flex-wrap gap-3">
-            <Link
-              href="/shop"
-              className="inline-flex items-center gap-2 rounded-[2px] font-display text-[15px] font-medium uppercase tracking-[0.1em] text-white transition-colors"
-              style={{ background: '#e85d1a', padding: '16px 36px', border: '2px solid #e85d1a' }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = '#c44b0f'; e.currentTarget.style.borderColor = '#c44b0f' }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = '#e85d1a'; e.currentTarget.style.borderColor = '#e85d1a' }}
-            >
-              Jetzt shoppen <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-[2px] font-display text-[15px] font-medium uppercase tracking-[0.1em] transition-colors"
-              style={{ color: '#111111', padding: '15px 36px', border: '2px solid #111111', background: 'transparent' }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = '#111111'; e.currentTarget.style.color = '#ffffff' }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#111111' }}
-            >
-              Anfrage stellen
-            </Link>
-          </div>
-
-          {/* Stats bar */}
-          <div
-            className="flex"
-            style={{ borderTop: '1px solid #E0DFDB' }}
-          >
-            {[
-              { num: '500+', label: 'Kunden' },
-              { num: '50+', label: 'Produkte' },
-              { num: 'EU-weit', label: 'Lieferung' },
-            ].map((stat, i) => (
-              <div
-                key={stat.num}
-                className="flex-1 pt-6"
-                style={{
-                  borderRight: i < 2 ? '1px solid #E0DFDB' : 'none',
-                  paddingRight: i < 2 ? '24px' : '0',
-                  paddingLeft: i > 0 ? '24px' : '0',
-                }}
-              >
-                <div
-                  className="font-display text-[32px] font-semibold leading-none"
-                  style={{ color: '#e85d1a' }}
-                >
-                  {stat.num}
-                </div>
-                <div
-                  className="mt-1 text-[11px] font-medium uppercase tracking-[0.12em]"
-                  style={{ color: '#6B6B6B' }}
-                >
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right — Product visual */}
-        <div
-          className="relative flex items-center justify-center overflow-hidden"
-          style={{ background: '#F8F7F4' }}
-        >
-          {/* Decorative ring */}
-          <div
-            aria-hidden="true"
-            className="absolute rounded-full"
-            style={{
-              width: '520px',
-              height: '520px',
-              border: '1px solid #E0DFDB',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          />
-          <div
-            aria-hidden="true"
-            className="absolute rounded-full"
-            style={{
-              width: '380px',
-              height: '380px',
-              border: '1px solid #E0DFDB',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          />
-
-          {/* Product hero image placeholder */}
-          <div
-            className="relative z-10 flex flex-col items-center text-center"
-          >
-            <span
-              className="mb-4 select-none"
-              style={{ fontSize: '120px', lineHeight: 1 }}
-              aria-hidden="true"
-            >
-              🏏
-            </span>
-            <span
-              className="font-display text-[11px] font-semibold uppercase tracking-[0.2em]"
-              style={{ color: '#6B6B6B' }}
-            >
-              Magnitude Legend
-            </span>
-            <span
-              className="font-display text-[13px] font-semibold uppercase tracking-[0.1em]"
-              style={{ color: '#e85d1a' }}
-            >
-              Ab €1.299
-            </span>
-          </div>
-
-          {/* Info card */}
-          <div
-            className="absolute bottom-8 right-8"
-            style={{
-              background: '#ffffff',
-              border: '1px solid #E0DFDB',
-              padding: '16px 20px',
-              maxWidth: '200px',
-            }}
-          >
-            <p
-              className="mb-1 font-display text-[11px] font-semibold uppercase tracking-[0.12em]"
-              style={{ color: '#6B6B6B' }}
-            >
-              Neue Saison 2025
-            </p>
-            <p
-              className="font-display text-[15px] font-bold uppercase leading-tight tracking-[0.04em]"
-              style={{ color: '#111111' }}
-            >
-              Magnitude Legend Serie
-            </p>
-            <p className="mt-1 text-[12px]" style={{ color: '#6B6B6B' }}>
-              Englisches Weidenholz Klasse I
-            </p>
-            <Link
-              href="/shop"
-              className="mt-3 flex items-center gap-1 text-[12px] font-semibold uppercase tracking-wider"
-              style={{ color: '#e85d1a' }}
-            >
-              Entdecken <ChevronRight className="h-3 w-3" />
-            </Link>
-          </div>
-
-          {/* Top-left label */}
-          <div
-            className="absolute left-8 top-8 px-3 py-1.5 font-display text-[11px] font-semibold uppercase tracking-[0.14em] text-white"
-            style={{ background: '#111111' }}
-          >
-            Premium Cricket
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
-          TRUST BAR
-      ══════════════════════════════════════════════════════════════ */}
-      <section aria-label="Vertrauensmerkmale" style={{ borderBottom: '1px solid #E0DFDB' }}>
-        <div
-          className="flex flex-wrap items-center justify-center"
-          style={{ padding: '0 60px' }}
-        >
-          {TRUST_ITEMS.map((item, i) => (
-            <div
-              key={item.text}
-              className="flex items-center gap-3"
-              style={{
-                padding: '18px 32px',
-                borderRight: i < TRUST_ITEMS.length - 1 ? '1px solid #E0DFDB' : 'none',
-              }}
-            >
-              <item.icon
-                className="h-4 w-4 shrink-0"
-                style={{ color: '#e85d1a' }}
-                aria-hidden="true"
-              />
-              <span
-                className="whitespace-nowrap text-[13px] font-medium"
-                style={{ color: '#333333' }}
-              >
-                {item.text}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
-          CATEGORIES GRID
-      ══════════════════════════════════════════════════════════════ */}
-      <section
-        aria-labelledby="categories-heading"
-        style={{ padding: '80px 60px', borderBottom: '1px solid #E0DFDB' }}
-      >
-        {/* Section header */}
-        <div className="mb-10 flex items-end justify-between">
-          <div>
-            <p
-              className="mb-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em]"
-              style={{ color: '#e85d1a' }}
-            >
-              Kollektionen
-            </p>
-            <h2
-              id="categories-heading"
-              className="font-display font-bold uppercase leading-tight tracking-[0.01em]"
-              style={{ fontSize: 'clamp(34px, 4vw, 52px)', color: '#111111' }}
-            >
-              Alle Kategorien
-            </h2>
-          </div>
-          <Link
-            href="/shop"
-            className="flex items-center gap-2 font-display text-[13px] font-semibold uppercase tracking-widest transition-colors"
-            style={{ color: '#e85d1a' }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = '#c44b0f' }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = '#e85d1a' }}
-          >
-            Alle anzeigen <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-
-        {/* 6-column grid */}
-        <div
-          className="grid"
-          style={{
-            gridTemplateColumns: 'repeat(6, 1fr)',
-            border: '1px solid #E0DFDB',
-          }}
-        >
-          {CATEGORIES.map((cat, i) => (
-            <Link
-              key={cat.name}
-              href={cat.href}
-              className="group flex flex-col items-center justify-center text-center transition-colors"
-              style={{
-                padding: '36px 16px',
-                borderRight: i < CATEGORIES.length - 1 ? '1px solid #E0DFDB' : 'none',
-                background: '#ffffff',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#e85d1a'
-                const spans = e.currentTarget.querySelectorAll('span')
-                spans.forEach((s) => {
-                  ;(s as HTMLElement).style.color = '#ffffff'
-                })
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#ffffff'
-                const spans = e.currentTarget.querySelectorAll('span')
-                spans.forEach((s, si) => {
-                  ;(s as HTMLElement).style.color = si === 0 ? '#111111' : '#6B6B6B'
-                })
-              }}
-            >
-              <span
-                className="mb-3 block select-none transition-colors"
-                style={{ fontSize: '38px', lineHeight: 1 }}
-                aria-hidden="true"
-              >
-                {cat.emoji}
-              </span>
-              <span
-                className="block font-display text-[13px] font-semibold uppercase leading-tight tracking-[0.06em] transition-colors"
-                style={{ color: '#111111' }}
-              >
-                {cat.name}
-              </span>
-              <span
-                className="mt-1 block text-[11px] transition-colors"
-                style={{ color: '#6B6B6B' }}
-              >
-                {cat.count ? `${cat.count} Produkte` : 'Individuelle Bestellungen'}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
-          FEATURED PRODUCTS WITH TABS
-      ══════════════════════════════════════════════════════════════ */}
-      <section
-        aria-labelledby="products-heading"
-        style={{ padding: '80px 60px', background: '#F8F7F4', borderBottom: '1px solid #E0DFDB' }}
-      >
-        {/* Section header */}
-        <div className="mb-8 flex items-end justify-between">
-          <div>
-            <p
-              className="mb-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em]"
-              style={{ color: '#e85d1a' }}
-            >
-              Unsere Produkte
-            </p>
-            <h2
-              id="products-heading"
-              className="font-display font-bold uppercase leading-tight tracking-[0.01em]"
-              style={{ fontSize: 'clamp(34px, 4vw, 52px)', color: '#111111' }}
-            >
-              Ausgewählte Ausrüstung
-            </h2>
-          </div>
-          <Link
-            href="/shop"
-            className="hidden items-center gap-2 font-display text-[13px] font-semibold uppercase tracking-widest transition-colors md:flex"
-            style={{ color: '#e85d1a' }}
-          >
-            Alle Produkte <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-
-        {/* Tabs */}
-        <div
-          className="mb-8 flex gap-0"
-          role="tablist"
-          aria-label="Produkt-Kategorien"
-          style={{ borderBottom: '1px solid #E0DFDB' }}
-        >
-          {TABS.map((tab) => (
-            <button
-              key={tab.key}
-              type="button"
-              role="tab"
-              aria-selected={activeTab === tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className="font-display text-[13px] font-medium uppercase tracking-[0.06em] transition-colors"
-              style={{
-                padding: '14px 24px',
-                color: activeTab === tab.key ? '#e85d1a' : '#6B6B6B',
-                borderTop: 'none',
-                borderLeft: 'none',
-                borderRight: 'none',
-                borderBottom: activeTab === tab.key ? '2px solid #e85d1a' : '2px solid transparent',
-                background: 'none',
-                cursor: 'pointer',
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Product grid */}
-        {filteredProducts.length > 0 ? (
-          <div
-            className="grid gap-0"
-            style={{ gridTemplateColumns: 'repeat(4, 1fr)', border: '1px solid #E0DFDB' }}
-          >
-            {filteredProducts.map((product, i) => (
-              <div
-                key={product.id}
-                style={{ borderRight: i < filteredProducts.length - 1 ? '1px solid #E0DFDB' : 'none' }}
-              >
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div
-            className="flex items-center justify-center py-20 font-display text-[13px] uppercase tracking-widest"
-            style={{ color: '#6B6B6B', border: '1px solid #E0DFDB', background: '#ffffff' }}
-          >
-            Demnächst verfügbar
-          </div>
-        )}
-
-        <div className="mt-8 text-center">
-          <Link
-            href="/shop"
-            className="inline-flex items-center gap-2 rounded-[2px] font-display text-[14px] font-medium uppercase tracking-[0.1em] text-white transition-colors"
-            style={{ background: '#111111', padding: '14px 36px' }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#e85d1a' }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = '#111111' }}
-          >
-            Alle Produkte ansehen <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
-          ENGLISH WILLOW FEATURE — Dark section
-      ══════════════════════════════════════════════════════════════ */}
-      <section
-        aria-labelledby="willow-heading"
-        style={{ background: '#111111', borderBottom: '1px solid #1c1c1c' }}
-      >
-        <div
-          className="grid items-center"
-          style={{
-            gridTemplateColumns: '1fr 1fr',
-            minHeight: '520px',
-          }}
-        >
-          {/* Left — Visual */}
-          <div
-            className="relative flex items-center justify-center overflow-hidden"
-            style={{ background: '#1c1c1c', height: '520px', borderRight: '1px solid #2a2a2a' }}
-          >
-            <div
-              aria-hidden="true"
-              className="absolute rounded-full"
-              style={{ width: '400px', height: '400px', border: '1px solid #2a2a2a', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
-            />
-            <span style={{ fontSize: '100px', zIndex: 10, position: 'relative' }} aria-hidden="true">🏏</span>
-            <div
-              className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-6 py-4"
-              style={{ background: 'rgba(232,93,26,0.15)', borderTop: '1px solid rgba(232,93,26,0.3)' }}
-            >
-              <span
-                className="font-display text-[11px] font-semibold uppercase tracking-[0.2em]"
-                style={{ color: '#e85d1a' }}
-              >
-                Handgefertigt
-              </span>
-              <span
-                className="font-display text-[11px] font-semibold uppercase tracking-[0.2em]"
-                style={{ color: '#e85d1a' }}
-              >
-                English Willow Klasse I
-              </span>
-            </div>
-          </div>
-
-          {/* Right — Copy */}
-          <div style={{ padding: '60px 80px' }}>
-            <span
-              className="mb-6 inline-block font-display text-[11px] font-semibold uppercase tracking-[0.22em]"
-              style={{ color: '#e85d1a' }}
-            >
-              Premium Collection
-            </span>
-            <h2
-              id="willow-heading"
-              className="mb-6 font-display font-bold uppercase leading-tight tracking-[0.01em]"
-              style={{ fontSize: 'clamp(30px, 3.5vw, 46px)', color: '#ffffff' }}
-            >
-              English Willow<br />
-              <span style={{ color: '#e85d1a' }}>Cricketschläger</span>
-            </h2>
-            <p
-              className="mb-8 text-[15px] leading-[1.8]"
-              style={{ color: '#A0A0A0', maxWidth: '400px' }}
-            >
-              Gefertigt aus dem feinsten englischen Weidenholz — jeder Schläger ein Unikat.
-              Handpicked grain, handcrafted blade, professional performance.
-              Der Unterschied den Profispieler kennen.
-            </p>
-
-            <ul className="mb-8 space-y-3">
-              {[
-                'Englisches Weidenholz Klasse I–III',
-                'Handgefertigte Klingenverarbeitung',
-                'Professionell aufgeklopft & ölgetränkt',
-                'Individuelle Gewichts- und Grip-Auswahl',
-              ].map((feat) => (
-                <li key={feat} className="flex items-start gap-3 text-[14px]" style={{ color: '#A0A0A0' }}>
-                  <ChevronRight className="mt-0.5 h-4 w-4 shrink-0" style={{ color: '#e85d1a' }} />
-                  {feat}
-                </li>
-              ))}
-            </ul>
-
-            <Link
-              href="/categories/cricket-bats"
-              className="inline-flex items-center gap-2 rounded-[2px] font-display text-[14px] font-medium uppercase tracking-[0.1em] text-white transition-colors"
-              style={{ background: '#e85d1a', padding: '14px 32px', border: '2px solid #e85d1a' }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#e85d1a' }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = '#e85d1a' }}
-            >
-              Kollektion entdecken <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
-          WHY MANTRA — 4 benefit cards
-      ══════════════════════════════════════════════════════════════ */}
-      <section
-        aria-labelledby="why-heading"
-        style={{ padding: '80px 60px', background: '#ffffff', borderBottom: '1px solid #E0DFDB' }}
-      >
-        <div className="mb-12 text-center">
-          <p
-            className="mb-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em]"
-            style={{ color: '#e85d1a' }}
-          >
-            Warum Mantra Sports
-          </p>
-          <h2
-            id="why-heading"
-            className="font-display font-bold uppercase leading-tight tracking-[0.01em]"
-            style={{ fontSize: 'clamp(34px, 4vw, 52px)', color: '#111111' }}
-          >
-            Der Mantra-Unterschied
-          </h2>
-        </div>
-
-        <div
-          className="grid"
-          style={{ gridTemplateColumns: 'repeat(4, 1fr)', border: '1px solid #E0DFDB' }}
-        >
-          {WHY_ITEMS.map((item, i) => (
-            <div
-              key={item.title}
-              className="group flex flex-col transition-colors"
-              style={{
-                padding: '40px 32px',
-                borderRight: i < WHY_ITEMS.length - 1 ? '1px solid #E0DFDB' : 'none',
-                background: '#ffffff',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = '#F8F7F4' }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = '#ffffff' }}
-            >
-              <div
-                className="mb-5 flex h-12 w-12 items-center justify-center rounded-[2px]"
-                style={{ background: '#FFF5ED' }}
-              >
-                <item.icon className="h-5 w-5" style={{ color: '#e85d1a' }} aria-hidden="true" />
-              </div>
-              <h3
-                className="mb-3 font-display text-[18px] font-semibold uppercase tracking-[0.04em]"
-                style={{ color: '#111111' }}
-              >
-                {item.title}
-              </h3>
-              <p className="text-[14px] leading-relaxed" style={{ color: '#6B6B6B' }}>
-                {item.text}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
-          CUSTOMER REVIEWS
-      ══════════════════════════════════════════════════════════════ */}
-      <section
-        aria-labelledby="reviews-heading"
-        style={{ padding: '80px 60px', background: '#F8F7F4', borderBottom: '1px solid #E0DFDB' }}
-      >
-        <div className="mb-12 text-center">
-          <p
-            className="mb-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em]"
-            style={{ color: '#e85d1a' }}
-          >
-            Kundenstimmen
-          </p>
-          <h2
-            id="reviews-heading"
-            className="font-display font-bold uppercase leading-tight tracking-[0.01em]"
-            style={{ fontSize: 'clamp(34px, 4vw, 52px)', color: '#111111' }}
-          >
-            Was unsere Kunden sagen
-          </h2>
-        </div>
-
-        <div
-          className="grid"
-          style={{ gridTemplateColumns: 'repeat(3, 1fr)', border: '1px solid #E0DFDB' }}
-        >
-          {REVIEWS.map((review, i) => (
-            <div
-              key={review.name}
-              className="flex flex-col bg-white"
-              style={{
-                padding: '36px 32px',
-                borderRight: i < REVIEWS.length - 1 ? '1px solid #E0DFDB' : 'none',
-              }}
-            >
-              <Quote className="mb-4 h-8 w-8" style={{ color: '#E0DFDB' }} aria-hidden="true" />
-              <div className="mb-4">
-                <StarRating rating={review.rating} />
-              </div>
-              <p className="mb-6 flex-1 text-[14px] leading-[1.75]" style={{ color: '#333333' }}>
-                "{review.text}"
-              </p>
-              <div style={{ borderTop: '1px solid #F2F1EE', paddingTop: '16px' }}>
-                <p className="font-display text-[15px] font-semibold uppercase tracking-[0.04em]" style={{ color: '#111111' }}>
-                  {review.name}
-                </p>
-                <p className="text-[12px]" style={{ color: '#6B6B6B' }}>
-                  {review.location}
-                </p>
-                <p className="mt-1 text-[11px] font-medium uppercase tracking-wider" style={{ color: '#e85d1a' }}>
-                  {review.product}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
-          WHOLESALE BANNER
-      ══════════════════════════════════════════════════════════════ */}
-      <section
-        aria-labelledby="wholesale-heading"
-        style={{ background: '#F8F7F4', borderBottom: '1px solid #E0DFDB' }}
-      >
-        <div
-          className="flex items-center justify-between"
-          style={{ padding: '40px 60px', borderBottom: '1px solid #E0DFDB' }}
-        >
-          <div>
-            <p
-              className="mb-1 font-display text-[11px] font-semibold uppercase tracking-[0.22em]"
-              style={{ color: '#e85d1a' }}
-            >
-              Für Vereine & Händler
-            </p>
-            <h2
-              id="wholesale-heading"
-              className="font-display text-[28px] font-bold uppercase tracking-[0.02em]"
-              style={{ color: '#111111' }}
-            >
-              Großhandel & B2B-Anfragen
-            </h2>
-            <p className="mt-2 text-[14px]" style={{ color: '#6B6B6B' }}>
-              Günstige Großhandelspreise für Vereine, Schulen und Einzelhändler.
-            </p>
-          </div>
-          <Link
-            href="/wholesale"
-            className="inline-flex shrink-0 items-center gap-2 rounded-[2px] font-display text-[14px] font-medium uppercase tracking-[0.1em] text-white transition-colors"
-            style={{ background: '#111111', padding: '14px 32px' }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#e85d1a' }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = '#111111' }}
-          >
-            Großhandelsanfrage stellen <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
-          NEWSLETTER — Orange strip
-      ══════════════════════════════════════════════════════════════ */}
-      <section
-        aria-labelledby="newsletter-heading"
-        style={{ background: '#e85d1a' }}
-      >
-        <div
-          className="flex flex-col items-center text-center"
-          style={{ padding: '64px 60px' }}
-        >
-          <p
-            className="mb-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em]"
-            style={{ color: 'rgba(255,255,255,0.7)' }}
-          >
-            Newsletter
-          </p>
-          <h2
-            id="newsletter-heading"
-            className="mb-3 font-display text-[36px] font-bold uppercase leading-tight tracking-[0.01em] text-white"
-          >
-            Immer auf dem neuesten Stand
-          </h2>
-          <p className="mb-8 max-w-[460px] text-[15px] text-white" style={{ opacity: 0.85 }}>
-            Erhalte exklusive Angebote, neue Produktneuheiten und Cricket-News direkt in deinen Posteingang.
-          </p>
-
-          {newsletterSent ? (
-            <div
-              className="flex items-center gap-3 rounded-[2px] px-8 py-4 font-display text-[14px] font-semibold uppercase tracking-wider text-white"
-              style={{ background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.4)' }}
-            >
-              ✓ Vielen Dank! Du bist angemeldet.
-            </div>
-          ) : (
-            <form
-              className="flex gap-0"
-              style={{ maxWidth: '480px', width: '100%' }}
-              onSubmit={(e) => {
-                e.preventDefault()
-                if (email) {
-                  setNewsletterSent(true)
-                }
-              }}
-            >
-              <label htmlFor="newsletter-email" className="sr-only">E-Mail-Adresse</label>
-              <div className="relative flex-1">
-                <Mail
-                  className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2"
-                  style={{ color: '#6B6B6B' }}
-                  aria-hidden="true"
-                />
-                <input
-                  id="newsletter-email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Deine E-Mail-Adresse"
-                  className="w-full py-4 pl-11 pr-4 text-[14px] outline-none"
-                  style={{
-                    background: '#ffffff',
-                    color: '#111111',
-                    border: 'none',
-                    fontFamily: 'var(--font-inter)',
-                  }}
-                />
-              </div>
-              <button
-                type="submit"
-                className="shrink-0 font-display text-[13px] font-bold uppercase tracking-widest text-white transition-colors"
-                style={{ background: '#111111', padding: '14px 28px', border: 'none', cursor: 'pointer' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = '#1c1c1c' }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = '#111111' }}
-              >
-                Anmelden
-              </button>
-            </form>
-          )}
-
-          <p className="mt-4 text-[12px]" style={{ color: 'rgba(255,255,255,0.6)' }}>
-            Kein Spam. Abmeldung jederzeit möglich.
-          </p>
-        </div>
-      </section>
-
-    </div>
+    <HomePageClient
+      heroImageUrl={heroImageUrl}
+      heroProduct={heroProduct}
+      categories={categories}
+      tabProducts={tabProducts}
+    />
   )
 }

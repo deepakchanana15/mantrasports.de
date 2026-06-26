@@ -1,9 +1,66 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { saveSettings } from '@/lib/actions/settings'
 
 const inputCls = 'w-full rounded border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 disabled:bg-neutral-50 disabled:text-neutral-400'
+
+function HeroImageField({ currentUrl, disabled }: { currentUrl: string; disabled?: boolean }) {
+  const [url, setUrl] = useState(currentUrl)
+  const [uploading, setUploading] = useState(false)
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true)
+    try {
+      const fd = new FormData()
+      fd.append('file', file)
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+      const data = await res.json()
+      if (res.ok && data.url) setUrl(data.url)
+    } finally {
+      setUploading(false)
+      if (e.target) e.target.value = ''
+    }
+  }
+
+  return (
+    <div>
+      <label className="mb-1.5 block text-sm font-medium text-neutral-700">Hero Image</label>
+      {url && (
+        <div className="mb-3 overflow-hidden rounded border border-neutral-200 bg-neutral-50" style={{ height: '160px' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={url} alt="Hero preview" className="h-full w-full object-cover" />
+        </div>
+      )}
+      <div className="flex gap-2">
+        <input
+          type="text"
+          name="setting_hero_image_url"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="Paste a Cloudinary URL or use the Upload button"
+          disabled={disabled}
+          className={inputCls + ' flex-1'}
+        />
+        <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleUpload} />
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          disabled={disabled || uploading}
+          className="shrink-0 rounded border border-neutral-300 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-50 disabled:opacity-50"
+        >
+          {uploading ? 'Uploading…' : 'Upload image'}
+        </button>
+      </div>
+      <p className="mt-1.5 text-xs text-neutral-400">
+        Shown in the right panel of the homepage hero section. Best size: 800×800 px or larger. JPG, PNG, WebP.
+      </p>
+    </div>
+  )
+}
 
 const FIELDS = [
   { section: 'Branding', items: [
@@ -97,6 +154,12 @@ export function SettingsForm({
           </div>
         </div>
       ))}
+
+      {/* Homepage hero image */}
+      <div className="rounded border border-neutral-200 bg-white p-6">
+        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-neutral-500">Homepage</h2>
+        <HeroImageField currentUrl={settings['hero_image_url'] ?? ''} disabled={disabled} />
+      </div>
 
       <div className="flex items-center gap-4">
         <button
