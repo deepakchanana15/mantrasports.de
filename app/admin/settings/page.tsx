@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { prisma } from '@/lib/db/prisma'
 import { SettingsForm } from './SettingsForm'
+import { PasswordForm } from './PasswordForm'
 import { DEFAULT_SITE_SETTINGS } from '@/lib/config/site'
 
 export const metadata: Metadata = { title: 'Settings' }
@@ -35,6 +36,17 @@ export default async function SettingsPage() {
       )}
 
       <SettingsForm settings={settings} disabled={dbError} />
+
+      {/* Password change */}
+      <div className="mt-10 border-t border-neutral-200 pt-8">
+        <h2 className="mb-1 font-display text-lg font-bold uppercase tracking-tight text-neutral-900">
+          Change Password
+        </h2>
+        <p className="mb-5 text-sm text-neutral-500">
+          Update your admin account password.
+        </p>
+        <PasswordForm />
+      </div>
     </div>
   )
 }
