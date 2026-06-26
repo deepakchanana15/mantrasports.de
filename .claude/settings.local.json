@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Process -Name \"node\" -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowTitle -eq \"\" } | ForEach-Object { \"Stopping PID $\\($_.Id\\)\"; Stop-Process -Id $_.Id -Force })"
+    ]
+  }
+}
