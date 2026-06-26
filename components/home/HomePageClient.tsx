@@ -332,29 +332,33 @@ export function HomePageClient({ heroImageUrl, heroProduct, categories, tabProdu
           <div aria-hidden="true" className="absolute rounded-full" style={{ width: '520px', height: '520px', border: '1px solid #E0DFDB', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
           <div aria-hidden="true" className="absolute rounded-full" style={{ width: '380px', height: '380px', border: '1px solid #E0DFDB', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
 
-          {/* Hero visual: real image or emoji fallback */}
-          <div className="relative z-10 flex flex-col items-center text-center">
-            {heroVisualUrl ? (
-              <div className="relative mb-4" style={{ width: '320px', height: '320px' }}>
+          {/* Hero visual: full-panel product image or emoji fallback */}
+          {heroVisualUrl ? (
+            /* Image fills the usable area — cleared above by the badge and below by the info card */
+            <div className="absolute z-10" style={{ top: '72px', left: '32px', right: '32px', bottom: '168px' }}>
+              <div className="relative w-full h-full">
                 <Image
                   src={heroVisualUrl}
                   alt={heroName}
                   fill
-                  sizes="320px"
+                  sizes="50vw"
                   priority
                   className="object-contain"
+                  style={{ filter: 'drop-shadow(0 24px 48px rgba(0,0,0,0.13))' }}
                 />
               </div>
-            ) : (
+            </div>
+          ) : (
+            <div className="relative z-10 flex flex-col items-center text-center">
               <span className="mb-4 select-none" style={{ fontSize: '120px', lineHeight: 1 }} aria-hidden="true">🏏</span>
-            )}
-            <span className="font-display text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: '#6B6B6B' }}>
-              {heroProduct?.name || 'Magnitude Legend'}
-            </span>
-            <span className="font-display text-[13px] font-semibold uppercase tracking-[0.1em]" style={{ color: '#e85d1a' }}>
-              Ab {formatPrice(heroPrice)}
-            </span>
-          </div>
+              <span className="font-display text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: '#6B6B6B' }}>
+                {heroProduct?.name || 'Magnitude Legend'}
+              </span>
+              <span className="font-display text-[13px] font-semibold uppercase tracking-[0.1em]" style={{ color: '#e85d1a' }}>
+                Ab {formatPrice(heroPrice)}
+              </span>
+            </div>
+          )}
 
           {/* Info card */}
           <div className="absolute bottom-8 right-8" style={{ background: '#ffffff', border: '1px solid #E0DFDB', padding: '16px 20px', maxWidth: '200px' }}>
