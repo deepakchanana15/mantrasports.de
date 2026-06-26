@@ -1,15 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import { ChevronRight } from 'lucide-react'
 import { prisma } from '@/lib/db/prisma'
+import { ProductFormLoader } from '@/components/admin/ProductFormLoader'
 
 export const metadata: Metadata = { title: 'Add Product' }
-
-const ProductForm = dynamic(
-  () => import('@/components/admin/ProductForm').then((m) => ({ default: m.ProductForm })),
-  { ssr: false, loading: () => <p className="text-sm text-neutral-400">Loading form…</p> }
-)
 
 export default async function NewProductPage() {
   let categories: { id: string; name: string }[] = []
@@ -35,7 +30,7 @@ export default async function NewProductPage() {
         Add New Product
       </h1>
 
-      <ProductForm categories={categories} />
+      <ProductFormLoader categories={categories} />
     </div>
   )
 }

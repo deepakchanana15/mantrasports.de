@@ -1,14 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
 import { ChevronRight } from 'lucide-react'
 import { prisma } from '@/lib/db/prisma'
-
-const ProductForm = dynamic(
-  () => import('@/components/admin/ProductForm').then((m) => ({ default: m.ProductForm })),
-  { ssr: false, loading: () => <p className="text-sm text-neutral-400">Loading form…</p> }
-)
+import { ProductFormLoader } from '@/components/admin/ProductFormLoader'
 
 export const metadata: Metadata = { title: 'Edit Product' }
 
@@ -47,7 +42,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         Edit Product
       </h1>
 
-      <ProductForm product={product} categories={categories} />
+      <ProductFormLoader product={product} categories={categories} />
     </div>
   )
 }
