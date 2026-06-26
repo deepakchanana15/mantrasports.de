@@ -11,7 +11,12 @@ export const metadata: Metadata = {
 }
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const session = await auth()
+  let session = null
+  try {
+    session = await auth()
+  } catch {
+    // If auth throws (e.g. misconfigured secret), treat as unauthenticated
+  }
 
   // Login page is wrapped by this layout — render it standalone without admin chrome.
   // The middleware (proxy.ts) handles redirecting unauthenticated users on all other routes.
