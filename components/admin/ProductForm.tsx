@@ -171,7 +171,10 @@ function ProductFormContent({ product, categories }: ProductFormProps) {
         router.push('/admin/products')
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred. Please try again.')
+      const msg = err instanceof Error ? err.message : String(err)
+      // Next.js sanitises server action errors in production — show a clear fallback
+      const isGeneric = msg.includes('Server Components render') || msg.includes('omitted in production')
+      setError(isGeneric ? 'Save failed. Check that the product name is unique and all required fields are filled in, then try again.' : msg)
       setSubmitting(false)
     }
   }

@@ -31,10 +31,21 @@ export async function createProduct(formData: FormData): Promise<{ id: string }>
   const tags = (formData.get('tags') as string || '')
     .split(',').map((t) => t.trim()).filter(Boolean)
 
+  // If slug conflicts, append a counter
+  let finalSlug = slug
+  const existing = await prisma.product.findUnique({ where: { slug } })
+  if (existing) {
+    let counter = 2
+    while (await prisma.product.findUnique({ where: { slug: `${slug}-${counter}` } })) {
+      counter++
+    }
+    finalSlug = `${slug}-${counter}`
+  }
+
   const product = await prisma.product.create({
     data: {
       name,
-      slug,
+      slug: finalSlug,
       sku: (formData.get('sku') as string) || null,
       categoryId: (formData.get('categoryId') as string) || null,
       description: (formData.get('description') as string) || null,
