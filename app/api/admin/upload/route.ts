@@ -7,10 +7,28 @@ import { existsSync } from 'fs'
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
 const MAX_SIZE = 5 * 1024 * 1024 // 5 MB
 
+// On Vercel the project root is read-only; write to /tmp instead.
+// Files in /tmp are ephemeral (cleared between deployments) so this
+// route is intended for local dev only until cloud storage is configured.
+const isVercel = !!process.env.VERCEL
+const uploadDir = isVercel
+  ? '/tmp/uploads/products'
+  : join(process.cwd(), 'public', 'uploads', 'products')
+
 export async function POST(req: NextRequest) {
   const session = await auth()
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  if (isVercel) {
+    return NextResponse.json(
+      {
+        error:
+          'Image uploads are not supported in this deployment. Please configure Cloudinary or another cloud storage provider.',
+      },
+      { status: 501 }
+    )
   }
 
   let formData: FormData
@@ -41,7 +59,6 @@ export async function POST(req: NextRequest) {
 
   const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
-  const uploadDir = join(process.cwd(), 'public', 'uploads', 'products')
 
   if (!existsSync(uploadDir)) {
     await mkdir(uploadDir, { recursive: true })
