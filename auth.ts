@@ -6,6 +6,7 @@ import { loginSchema } from '@/lib/validations/auth'
 import type { AdminRole } from '@/types'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {
