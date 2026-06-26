@@ -1,14 +1,18 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { ChevronRight } from 'lucide-react'
 import { prisma } from '@/lib/db/prisma'
-import { ProductForm } from '@/components/admin/ProductForm'
 
 export const metadata: Metadata = { title: 'Add Product' }
 
+const ProductForm = dynamic(
+  () => import('@/components/admin/ProductForm').then((m) => ({ default: m.ProductForm })),
+  { ssr: false, loading: () => <p className="text-sm text-neutral-400">Loading form…</p> }
+)
+
 export default async function NewProductPage() {
   let categories: { id: string; name: string }[] = []
-  let dbError = false
 
   try {
     categories = await prisma.category.findMany({
@@ -16,12 +20,11 @@ export default async function NewProductPage() {
       orderBy: { sortOrder: 'asc' },
     })
   } catch {
-    dbError = true
+    // DB not connected — form still renders, just no category list
   }
 
   return (
     <div>
-      {/* Breadcrumb */}
       <nav className="mb-6 flex items-center gap-1.5 text-sm text-neutral-500">
         <Link href="/admin/products" className="hover:text-neutral-700">Products</Link>
         <ChevronRight className="h-3.5 w-3.5" />
@@ -31,12 +34,6 @@ export default async function NewProductPage() {
       <h1 className="mb-6 font-display text-2xl font-bold uppercase tracking-tight text-neutral-900">
         Add New Product
       </h1>
-
-      {dbError && (
-        <div className="mb-6 rounded border border-amber-200 bg-amber-50 p-4 text-sm text-amber-700">
-          <strong>Database not connected.</strong> Products cannot be saved until your database is set up.
-        </div>
-      )}
 
       <ProductForm categories={categories} />
     </div>
