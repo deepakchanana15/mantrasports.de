@@ -58,10 +58,18 @@ const sectionCls = 'rounded border border-neutral-200 bg-white p-6'
 
 // ── Main Form ─────────────────────────────────────────────────────────────────
 
-export function ProductForm({ product, categories }: ProductFormProps) {
+// Shell: only runs on SSR — returns skeleton, then renders inner component client-side
+export function ProductForm(props: ProductFormProps) {
   const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
+  useEffect(() => { setMounted(true) }, [])
+  if (!mounted) {
+    return <div className="py-12 text-center text-sm text-neutral-400">Loading form…</div>
+  }
+  return <ProductFormContent {...props} />
+}
 
+// Inner form: never executed on the server
+function ProductFormContent({ product, categories }: ProductFormProps) {
   const router = useRouter()
   const isEdit = !!product
 
@@ -166,10 +174,6 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       setError(err instanceof Error ? err.message : 'An error occurred. Please try again.')
       setSubmitting(false)
     }
-  }
-
-  if (!mounted) {
-    return <div className="py-12 text-center text-sm text-neutral-400">Loading form…</div>
   }
 
   return (
