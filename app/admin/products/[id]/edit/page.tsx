@@ -5,6 +5,7 @@ import { ChevronRight } from 'lucide-react'
 import { prisma } from '@/lib/db/prisma'
 import { ProductForm } from '@/components/admin/ProductForm'
 
+export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Edit Product' }
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {

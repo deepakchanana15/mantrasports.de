@@ -4,6 +4,7 @@ import { ChevronRight } from 'lucide-react'
 import { prisma } from '@/lib/db/prisma'
 import { ProductForm } from '@/components/admin/ProductForm'
 
+export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Add Product' }
 
 export default async function NewProductPage() {
