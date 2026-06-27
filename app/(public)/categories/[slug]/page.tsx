@@ -14,13 +14,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       select: { name: true, metaTitle: true, metaDescription: true, description: true },
     })
     if (!cat) return {}
+    const deName = DE_NAMES[slug] ?? cat.name
     return {
-      title: cat.metaTitle ?? `${cat.name} — Mantra Sports DE`,
+      title: cat.metaTitle ?? `${deName} — Mantra Sports DE`,
       description: cat.metaDescription ?? cat.description?.slice(0, 160) ?? undefined,
     }
   } catch {
     return {}
   }
+}
+
+const DE_NAMES: Record<string, string> = {
+  'cricket-bats':    'Cricketschläger',
+  'balls':           'Bälle',
+  'protective-gear': 'Schutzausrüstung',
+  'accessories':     'Zubehör & Handschuhe',
+  'teamwear':        'Teamkleidung',
+  'custom-apparel':  'Individuelle Bekleidung',
 }
 
 const SORT_OPTIONS = [
@@ -77,6 +87,7 @@ export default async function CategoryPage({
   }
 
   const totalPages = Math.ceil(total / PER_PAGE)
+  const displayName = DE_NAMES[slug] ?? category.name
 
   return (
     <>
@@ -102,7 +113,7 @@ export default async function CategoryPage({
                 lineHeight: 1,
               }}
             >
-              {category.name}
+              {displayName}
             </h1>
           </div>
         </div>
@@ -116,7 +127,7 @@ export default async function CategoryPage({
             <span>/</span>
             <Link href="/shop" className="hover:text-[#E85D1A] transition-colors">Shop</Link>
             <span>/</span>
-            <span className="text-[#111]">{category.name}</span>
+            <span className="text-[#111]">{displayName}</span>
           </nav>
 
           {!category.imageUrl && (
@@ -132,7 +143,7 @@ export default async function CategoryPage({
                 marginBottom: 8,
               }}
             >
-              {category.name}
+              {displayName}
             </h1>
           )}
           {category.description && (
