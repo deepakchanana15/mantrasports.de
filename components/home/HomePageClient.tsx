@@ -14,7 +14,6 @@ import {
   ChevronRight,
   ArrowRight,
   Quote,
-  Mail,
 } from 'lucide-react'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -615,16 +614,23 @@ export function HomePageClient({ heroImageUrl, heroProduct, categories, tabProdu
               ✓ Vielen Dank! Du bist angemeldet.
             </div>
           ) : (
-            <form className="flex gap-0" style={{ maxWidth: '480px', width: '100%' }} onSubmit={(e) => { e.preventDefault(); if (email) setNewsletterSent(true) }}>
+            <form className="flex items-stretch gap-0" style={{ maxWidth: '480px', width: '100%' }} onSubmit={(e) => { e.preventDefault(); if (email) setNewsletterSent(true) }}>
               <label htmlFor="newsletter-email" className="sr-only">E-Mail-Adresse</label>
-              <div className="relative flex-1">
-                <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2" style={{ color: '#6B6B6B' }} aria-hidden="true" />
-                <input id="newsletter-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Deine E-Mail-Adresse"
-                  className="w-full py-4 pl-11 pr-4 text-[14px] outline-none" style={{ background: '#ffffff', color: '#111111', border: 'none', fontFamily: 'var(--font-inter)' }} />
-              </div>
-              <button type="submit" className="shrink-0 font-display text-[13px] font-bold uppercase tracking-widest text-white transition-colors" style={{ background: '#111111', padding: '14px 28px', border: 'none', cursor: 'pointer' }}
+              <input
+                id="newsletter-email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Deine E-Mail-Adresse"
+                style={{ flex: 1, height: '52px', padding: '0 16px', fontSize: '14px', outline: 'none', background: '#ffffff', color: '#111111', border: 'none', fontFamily: 'var(--font-inter)' }}
+              />
+              <button
+                type="submit"
+                style={{ height: '52px', padding: '0 28px', background: '#111111', border: 'none', cursor: 'pointer', color: '#ffffff', fontFamily: 'var(--font-oswald), Oswald, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap', flexShrink: 0 }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = '#1c1c1c' }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = '#111111' }}>
+                onMouseLeave={(e) => { e.currentTarget.style.background = '#111111' }}
+              >
                 Anmelden
               </button>
             </form>
