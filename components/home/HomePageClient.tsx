@@ -427,11 +427,11 @@ export function HomePageClient({ heroImageUrl, heroProduct, categories, tabProdu
               >
                 {/* Category image or emoji */}
                 {dbImage ? (
-                  <div className="relative mb-3 overflow-hidden rounded" style={{ width: '48px', height: '48px' }}>
-                    <Image src={dbImage} alt={cat.name} fill sizes="48px" className="object-cover" />
+                  <div className="relative mb-4 overflow-hidden rounded" style={{ width: '96px', height: '96px' }}>
+                    <Image src={dbImage} alt={cat.name} fill sizes="96px" className="object-cover" />
                   </div>
                 ) : (
-                  <span className="mb-3 block select-none transition-colors" style={{ fontSize: '38px', lineHeight: 1 }} aria-hidden="true">
+                  <span className="mb-4 block select-none transition-colors" style={{ fontSize: '64px', lineHeight: 1 }} aria-hidden="true">
                     {cat.emoji}
                   </span>
                 )}
