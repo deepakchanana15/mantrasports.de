@@ -136,6 +136,46 @@ export function Footer() {
         ))}
       </div>
 
+      {/* ── Global Websites ───────────────────────────────────────── */}
+      <div className="border-t" style={{ borderColor: '#1c1c1c' }}>
+        <div
+          className="flex flex-wrap items-center gap-x-0 gap-y-0"
+          style={{ padding: '0 60px' }}
+        >
+          <span
+            className="mr-6 shrink-0 font-display text-[11px] font-semibold uppercase tracking-[0.18em]"
+            style={{ color: '#6B6B6B', padding: '18px 0' }}
+          >
+            Mantra Sports Weltweit:
+          </span>
+          {[
+            { label: 'Australien', flag: '🇦🇺', href: 'https://www.mantrasports.com.au' },
+            { label: 'United States', flag: '🇺🇸', href: 'https://www.mantrasportsusa.com' },
+            { label: 'Netherlands', flag: '🇳🇱', href: 'https://www.mantrasports.nl' },
+            { label: 'Indien', flag: '🇮🇳', href: 'https://www.mantrasports.co.in' },
+            { label: 'Kanada', flag: '🇨🇦', href: 'https://www.mantrasports.ca' },
+          ].map((site, i, arr) => (
+            <a
+              key={site.label}
+              href={site.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-[12px] transition-colors"
+              style={{
+                color: '#6B6B6B',
+                padding: '18px 20px',
+                borderLeft: '1px solid #1c1c1c',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#e85d1a' }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = '#6B6B6B' }}
+            >
+              <span aria-hidden="true">{site.flag}</span>
+              {site.label}
+            </a>
+          ))}
+        </div>
+      </div>
+
       {/* ── Bottom Bar ────────────────────────────────────────────── */}
       <div className="border-t" style={{ borderColor: '#1c1c1c' }}>
         <div
