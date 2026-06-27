@@ -631,6 +631,7 @@ export function HomePageClient({ heroImageUrl, heroProduct, willowImageUrl, cate
               ✓ Vielen Dank! Du bist angemeldet.
             </div>
           ) : (
+            <>
             <form
               className="flex items-stretch gap-0"
               style={{ maxWidth: '480px', width: '100%' }}
@@ -671,6 +672,7 @@ export function HomePageClient({ heroImageUrl, heroProduct, willowImageUrl, cate
             {newsletterError && (
               <p className="mt-2 text-[12px]" style={{ color: 'rgba(255,255,255,0.9)' }}>{newsletterError}</p>
             )}
+            </>
           )}
 
           <p className="mt-4 text-[12px]" style={{ color: 'rgba(255,255,255,0.6)' }}>Kein Spam. Abmeldung jederzeit möglich.</p>
