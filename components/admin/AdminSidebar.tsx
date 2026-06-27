@@ -11,6 +11,7 @@ import {
   Image,
   Settings,
   LogOut,
+  Mail,
 } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 
@@ -19,6 +20,7 @@ const NAV = [
   { href: '/admin/products',    label: 'Products',    icon: Package },
   { href: '/admin/collections', label: 'Collections', icon: FolderOpen },
   { href: '/admin/enquiries',   label: 'Enquiries',   icon: MessageSquare },
+  { href: '/admin/newsletter',  label: 'Newsletter',  icon: Mail },
   { href: '/admin/blog',        label: 'Blog',        icon: FileText },
   { href: '/admin/media',       label: 'Media',       icon: Image },
   { href: '/admin/settings',    label: 'Settings',    icon: Settings },

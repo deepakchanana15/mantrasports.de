@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { subscribeNewsletter } from '@/lib/actions/newsletter'
 import {
   Star,
   ShieldCheck,
@@ -260,6 +261,8 @@ export function HomePageClient({ heroImageUrl, heroProduct, willowImageUrl, cate
   const [activeTab, setActiveTab] = useState('neue')
   const [email, setEmail] = useState('')
   const [newsletterSent, setNewsletterSent] = useState(false)
+  const [newsletterError, setNewsletterError] = useState('')
+  const [newsletterLoading, setNewsletterLoading] = useState(false)
 
   // Build category image lookup: slug → imageUrl from DB
   const catImageBySlug: Record<string, string | null> = {}
@@ -628,7 +631,23 @@ export function HomePageClient({ heroImageUrl, heroProduct, willowImageUrl, cate
               ✓ Vielen Dank! Du bist angemeldet.
             </div>
           ) : (
-            <form className="flex items-stretch gap-0" style={{ maxWidth: '480px', width: '100%' }} onSubmit={(e) => { e.preventDefault(); if (email) setNewsletterSent(true) }}>
+            <form
+              className="flex items-stretch gap-0"
+              style={{ maxWidth: '480px', width: '100%' }}
+              onSubmit={async (e) => {
+                e.preventDefault()
+                if (!email) return
+                setNewsletterLoading(true)
+                setNewsletterError('')
+                const result = await subscribeNewsletter(email)
+                if (result.ok) {
+                  setNewsletterSent(true)
+                } else {
+                  setNewsletterError(result.error ?? 'Fehler')
+                }
+                setNewsletterLoading(false)
+              }}
+            >
               <label htmlFor="newsletter-email" className="sr-only">E-Mail-Adresse</label>
               <input
                 id="newsletter-email"
@@ -641,13 +660,17 @@ export function HomePageClient({ heroImageUrl, heroProduct, willowImageUrl, cate
               />
               <button
                 type="submit"
-                style={{ height: '52px', padding: '0 28px', background: '#111111', border: 'none', cursor: 'pointer', color: '#ffffff', fontFamily: 'var(--font-oswald), Oswald, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap', flexShrink: 0 }}
+                disabled={newsletterLoading}
+                style={{ height: '52px', padding: '0 28px', background: '#111111', border: 'none', cursor: newsletterLoading ? 'wait' : 'pointer', color: '#ffffff', fontFamily: 'var(--font-oswald), Oswald, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap', flexShrink: 0, opacity: newsletterLoading ? 0.7 : 1 }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = '#1c1c1c' }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = '#111111' }}
               >
-                Anmelden
+                {newsletterLoading ? '…' : 'Anmelden'}
               </button>
             </form>
+            {newsletterError && (
+              <p className="mt-2 text-[12px]" style={{ color: 'rgba(255,255,255,0.9)' }}>{newsletterError}</p>
+            )}
           )}
 
           <p className="mt-4 text-[12px]" style={{ color: 'rgba(255,255,255,0.6)' }}>Kein Spam. Abmeldung jederzeit möglich.</p>

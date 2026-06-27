@@ -280,6 +280,16 @@ model SiteSetting {
   updatedAt DateTime    @updatedAt
 }
 
+// ─── Newsletter ──────────────────────────────────────────────────────────────
+
+model NewsletterSubscriber {
+  id          String   @id @default(uuid())
+  email       String   @unique @db.VarChar(255)
+  subscribedAt DateTime @default(now())
+
+  @@index([subscribedAt])
+}
+
 // ─── Media Library ───────────────────────────────────────────────────────────
 
 model Media {
