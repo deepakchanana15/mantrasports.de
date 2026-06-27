@@ -47,6 +47,7 @@ export interface HeroProduct {
 interface Props {
   heroImageUrl: string
   heroProduct: HeroProduct | null
+  willowImageUrl: string | null
   categories: CategoryDisplay[]
   tabProducts: {
     neue: ProductDisplay[]
@@ -255,7 +256,7 @@ function ProductCard({ product }: { product: CardProduct }) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export function HomePageClient({ heroImageUrl, heroProduct, categories, tabProducts }: Props) {
+export function HomePageClient({ heroImageUrl, heroProduct, willowImageUrl, categories, tabProducts }: Props) {
   const [activeTab, setActiveTab] = useState('neue')
   const [email, setEmail] = useState('')
   const [newsletterSent, setNewsletterSent] = useState(false)
@@ -502,8 +503,21 @@ export function HomePageClient({ heroImageUrl, heroProduct, categories, tabProdu
         <div className="grid items-center" style={{ gridTemplateColumns: '1fr 1fr', minHeight: '520px' }}>
           <div className="relative flex items-center justify-center overflow-hidden" style={{ background: '#1c1c1c', height: '520px', borderRight: '1px solid #2a2a2a' }}>
             <div aria-hidden="true" className="absolute rounded-full" style={{ width: '400px', height: '400px', border: '1px solid #2a2a2a', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
-            <span style={{ fontSize: '100px', zIndex: 10, position: 'relative' }} aria-hidden="true">🏏</span>
-            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-6 py-4" style={{ background: 'rgba(232,93,26,0.15)', borderTop: '1px solid rgba(232,93,26,0.3)' }}>
+            {willowImageUrl ? (
+              <div className="absolute z-10" style={{ top: '32px', left: '32px', right: '32px', bottom: '56px' }}>
+                <Image
+                  src={willowImageUrl}
+                  alt="Magnitude Legend — English Willow Cricketschläger"
+                  fill
+                  sizes="50vw"
+                  className="object-contain"
+                  style={{ filter: 'drop-shadow(0 16px 40px rgba(0,0,0,0.5))' }}
+                />
+              </div>
+            ) : (
+              <span style={{ fontSize: '100px', zIndex: 10, position: 'relative' }} aria-hidden="true">🏏</span>
+            )}
+            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-6 py-4" style={{ background: 'rgba(232,93,26,0.15)', borderTop: '1px solid rgba(232,93,26,0.3)', zIndex: 20 }}>
               <span className="font-display text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: '#e85d1a' }}>Handgefertigt</span>
               <span className="font-display text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: '#e85d1a' }}>English Willow Klasse I</span>
             </div>

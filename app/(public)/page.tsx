@@ -47,6 +47,7 @@ const productSelect = {
 export default async function HomePage() {
   let heroImageUrl = ''
   let heroProduct: HeroProduct | null = null
+  let willowImageUrl: string | null = null
   let categories: CategoryDisplay[] = []
   let tabProducts = {
     neue: [] as ProductDisplay[],
@@ -56,7 +57,7 @@ export default async function HomePage() {
   }
 
   try {
-    const [heroSetting, cats, newArrivals, bestsellers, batProds, saleProds, featured] =
+    const [heroSetting, cats, newArrivals, bestsellers, batProds, saleProds, featured, willowProduct] =
       await Promise.all([
         prisma.siteSetting.findUnique({ where: { key: 'hero_image_url' } }),
 
@@ -120,6 +121,12 @@ export default async function HomePage() {
             images: { where: { isPrimary: true }, take: 1, select: { url: true } },
           },
         }),
+
+        // Magnitude Legend image for the English Willow dark section
+        prisma.product.findFirst({
+          where: { slug: 'magnitude-legend' },
+          select: { images: { where: { isPrimary: true }, take: 1, select: { url: true } } },
+        }),
       ])
 
     heroImageUrl = heroSetting?.value ?? ''
@@ -147,6 +154,8 @@ export default async function HomePage() {
         imageUrl: featured.images[0]?.url ?? null,
       }
     }
+
+    willowImageUrl = willowProduct?.images[0]?.url ?? null
   } catch {
     // DB unavailable — render with placeholder / static data
   }
@@ -155,6 +164,7 @@ export default async function HomePage() {
     <HomePageClient
       heroImageUrl={heroImageUrl}
       heroProduct={heroProduct}
+      willowImageUrl={willowImageUrl}
       categories={categories}
       tabProducts={tabProducts}
     />
