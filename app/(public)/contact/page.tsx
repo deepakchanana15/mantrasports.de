@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   // Load live contact details from settings if set
-  let email = SITE_CONFIG.contact.email
-  let phone = SITE_CONFIG.contact.phone
-  let address = SITE_CONFIG.contact.address
-  let whatsapp = SITE_CONFIG.contact.whatsapp
+  let email: string = SITE_CONFIG.contact.email
+  let phone: string = SITE_CONFIG.contact.phone
+  let address: string = SITE_CONFIG.contact.address
+  let whatsapp: string = SITE_CONFIG.contact.whatsapp
 
   try {
     const settings = await prisma.siteSetting.findMany({
