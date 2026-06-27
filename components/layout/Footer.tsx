@@ -2,8 +2,16 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Instagram, Facebook, Youtube, Linkedin, Mail, ChevronRight, Twitter } from 'lucide-react'
+import { Instagram, Facebook, Youtube, Linkedin, Mail, ChevronRight } from 'lucide-react'
 import { FOOTER_NAV, SITE_CONFIG } from '@/lib/config/site'
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L2.25 2.25h6.918l4.254 5.625L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+    </svg>
+  )
+}
 
 function TikTokIcon({ className }: { className?: string }) {
   return (
@@ -87,7 +95,7 @@ export function Footer() {
               { icon: Facebook,      href: SITE_CONFIG.social.facebook,  label: 'Facebook'  },
               { icon: Linkedin,      href: SITE_CONFIG.social.linkedin,  label: 'LinkedIn'  },
               { icon: Youtube,       href: SITE_CONFIG.social.youtube,   label: 'YouTube'   },
-              { icon: Twitter,       href: '#',                          label: 'X (Twitter)' },
+              { icon: XIcon,         href: '#',                          label: 'X'           },
               { icon: TikTokIcon,    href: '#',                          label: 'TikTok'    },
               { icon: PinterestIcon, href: '#',                          label: 'Pinterest' },
             ].map(({ icon: Icon, href, label }) => (
