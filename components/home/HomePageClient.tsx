@@ -82,7 +82,7 @@ const CATEGORIES = [
   { name: 'Bälle', slug: 'balls', emoji: '🔴', href: '/categories/balls' },
   { name: 'Schutzausrüstung', slug: 'protective-gear', emoji: '🛡️', href: '/categories/protective-gear' },
   { name: 'Handschuhe', slug: 'accessories', emoji: '🧤', href: '/categories/accessories' },
-  { name: 'Sporttaschen', slug: 'teamwear', emoji: '🎒', href: '/categories/teamwear' },
+  { name: 'Sporttaschen', slug: 'sports-bags', emoji: '🎒', href: '/categories/sports-bags' },
   { name: 'Individuelle Bekleidung', slug: 'custom-apparel', emoji: '👕', href: '/categories/custom-apparel' },
 ]
 

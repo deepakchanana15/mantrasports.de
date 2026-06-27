@@ -29,6 +29,7 @@ const DE_NAMES: Record<string, string> = {
   'balls':           'Bälle',
   'protective-gear': 'Schutzausrüstung',
   'accessories':     'Zubehör & Handschuhe',
+  'sports-bags':     'Sporttaschen',
   'teamwear':        'Teamkleidung',
   'custom-apparel':  'Individuelle Bekleidung',
 }
