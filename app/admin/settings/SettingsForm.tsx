@@ -74,10 +74,13 @@ const FIELDS = [
     { key: 'whatsapp_number', label: 'WhatsApp Number', type: 'tel',    placeholder: '+49...' },
   ]},
   { section: 'Social Media', items: [
-    { key: 'social_instagram', label: 'Instagram URL', type: 'url', placeholder: 'https://instagram.com/...' },
-    { key: 'social_facebook',  label: 'Facebook URL',  type: 'url', placeholder: 'https://facebook.com/...' },
-    { key: 'social_linkedin',  label: 'LinkedIn URL',  type: 'url', placeholder: 'https://linkedin.com/...' },
-    { key: 'social_youtube',   label: 'YouTube URL',   type: 'url', placeholder: 'https://youtube.com/...' },
+    { key: 'social_instagram',  label: 'Instagram URL',  type: 'url', placeholder: 'https://instagram.com/mantrasports' },
+    { key: 'social_facebook',   label: 'Facebook URL',   type: 'url', placeholder: 'https://facebook.com/mantrasports' },
+    { key: 'social_linkedin',   label: 'LinkedIn URL',   type: 'url', placeholder: 'https://linkedin.com/company/mantrasports' },
+    { key: 'social_youtube',    label: 'YouTube URL',    type: 'url', placeholder: 'https://youtube.com/@mantrasports' },
+    { key: 'social_twitter',    label: 'X (Twitter) URL', type: 'url', placeholder: 'https://x.com/mantrasports' },
+    { key: 'social_tiktok',     label: 'TikTok URL',     type: 'url', placeholder: 'https://tiktok.com/@mantrasports' },
+    { key: 'social_pinterest',  label: 'Pinterest URL',  type: 'url', placeholder: 'https://pinterest.com/mantrasports' },
   ]},
   { section: 'SEO', items: [
     { key: 'meta_title',       label: 'Default Meta Title',       type: 'text',     placeholder: 'Mantra Sports DE — Premium Cricket' },
