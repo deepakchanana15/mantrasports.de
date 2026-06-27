@@ -1,6 +1,7 @@
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton'
+import { CookieBanner } from '@/components/layout/CookieBanner'
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -20,6 +21,9 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
 
       {/* Floating WhatsApp CTA — visible across all public pages */}
       <WhatsAppButton />
+
+      {/* GDPR cookie consent banner */}
+      <CookieBanner />
     </>
   )
 }
