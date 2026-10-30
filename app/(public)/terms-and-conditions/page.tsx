@@ -11,14 +11,13 @@ export const metadata: Metadata = {
 }
 
 // Contracting entity for the German site (Australian company).
-// ⚠ TODO: Fill in street, city and ABN before going live.
 // These must match the Impressum exactly.
 const COMPANY = {
   legalName: 'Mantra Corporation Pty Ltd',
-  street: '[Street address]',
-  city: '[Suburb State Postcode]',
+  street: 'Unit 2, 5 Ford Court',
+  city: 'Newnham TAS 7248',
   country: 'Australien',
-  abn: '[ABN]',
+  abn: '13 675 757 838',
   email: 'support@mantrasports.com.au',
   lastUpdated: '30. Oktober 2026',
 }
