@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { prisma } from '@/lib/db/prisma'
+import { auth } from '@/auth'
 import { SettingsForm } from './SettingsForm'
 import { PasswordForm } from './PasswordForm'
 import { DEFAULT_SITE_SETTINGS } from '@/lib/config/site'
@@ -7,6 +8,7 @@ import { DEFAULT_SITE_SETTINGS } from '@/lib/config/site'
 export const metadata: Metadata = { title: 'Settings' }
 
 export default async function SettingsPage() {
+  const session = await auth()
   let savedSettings: Record<string, string> = {}
   let dbError = false
 
@@ -45,7 +47,7 @@ export default async function SettingsPage() {
         <p className="mb-5 text-sm text-neutral-500">
           Update your admin account password.
         </p>
-        <PasswordForm />
+        <PasswordForm email={session?.user?.email ?? undefined} />
       </div>
     </div>
   )

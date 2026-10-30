@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { changeAdminPassword } from '@/lib/actions/admin'
 
-export function PasswordForm() {
+export function PasswordForm({ email }: { email?: string }) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
@@ -31,25 +31,28 @@ export function PasswordForm() {
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+      {/* Lets password managers save the new password against the right account */}
+      <input type="email" name="username" autoComplete="username" value={email ?? ''} readOnly hidden />
+
       <div>
         <label className="mb-1 block text-sm font-medium text-neutral-700" htmlFor="currentPassword">
           Current Password
         </label>
-        <input id="currentPassword" name="currentPassword" type="password" required className={inputCls} />
+        <input id="currentPassword" name="currentPassword" type="password" autoComplete="current-password" required className={inputCls} />
       </div>
 
       <div>
         <label className="mb-1 block text-sm font-medium text-neutral-700" htmlFor="newPassword">
           New Password <span className="text-neutral-400 font-normal">(min. 8 characters)</span>
         </label>
-        <input id="newPassword" name="newPassword" type="password" required minLength={8} className={inputCls} />
+        <input id="newPassword" name="newPassword" type="password" autoComplete="new-password" required minLength={8} className={inputCls} />
       </div>
 
       <div>
         <label className="mb-1 block text-sm font-medium text-neutral-700" htmlFor="confirmPassword">
           Confirm New Password
         </label>
-        <input id="confirmPassword" name="confirmPassword" type="password" required minLength={8} className={inputCls} />
+        <input id="confirmPassword" name="confirmPassword" type="password" autoComplete="new-password" required minLength={8} className={inputCls} />
       </div>
 
       {status === 'success' && (
