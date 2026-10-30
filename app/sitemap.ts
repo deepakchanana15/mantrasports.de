@@ -22,7 +22,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'https:
  *  - 404 / error pages
  *  - Pages referenced in nav config that have no route file yet
  *    (blog, faq, about, b2b, become-a-dealer, shipping-policy,
- *     returns-policy, privacy-policy, terms-and-conditions)
+ *     returns-policy, privacy-policy)
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // ── Static routes (verified route files exist) ──────────────────────────────
@@ -56,6 +56,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/terms-and-conditions`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
     },
   ]
 
