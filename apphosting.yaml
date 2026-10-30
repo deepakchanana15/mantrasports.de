@@ -24,12 +24,12 @@ env:
   # ── Replace these two values after your first deploy ──────────
   # Your Firebase App Hosting URL (e.g. https://mantra-sports-de.web.app)
   - variable: NEXTAUTH_URL
-    value: https://YOUR_APP.web.app
+    value: https://www.mantrasports.de
     availability:
       - RUNTIME
 
   - variable: NEXT_PUBLIC_SITE_URL
-    value: https://YOUR_APP.web.app
+    value: https://www.mantrasports.de
     availability:
       - BUILD
       - RUNTIME
