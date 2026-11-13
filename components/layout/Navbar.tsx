@@ -64,13 +64,12 @@ export function Navbar() {
         style={{ background: '#111111' }}
         className="py-[9px] px-4 text-center text-[12px] font-medium tracking-[0.08em] text-white"
       >
-        🏏 Kostenloser Versand ab €100 &nbsp;|&nbsp; Code{' '}
-        <strong>ERSTBESTELLUNG5</strong> für 5% Rabatt
+        🏏 Großhandels- und Vereinspreise für Teams, Akademien und Händler
         <Link
-          href="/shop"
+          href="/wholesale"
           className="ml-2 text-[#e85d1a] hover:underline"
         >
-          Jetzt shoppen →
+          Angebot anfordern →
         </Link>
       </div>
 

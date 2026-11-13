@@ -1,3 +1,4 @@
+import { ProductSchema } from '@/components/seo/JsonLd'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: p.metaTitle ?? p.name,
       description: p.metaDescription ?? p.description?.slice(0, 160) ?? undefined,
+      alternates: { canonical: `/shop/${slug}` },
     }
   } catch {
     return {}
@@ -81,6 +83,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
   return (
     <>
+      <ProductSchema name={product.name} description={product.description?.slice(0, 500) ?? undefined} image={product.images?.[0]?.url} sku={product.sku ?? undefined} url={`/shop/${product.slug}`} />
       <div style={{ maxWidth: 1440, margin: '0 auto', padding: '40px 60px 80px' }}>
         {/* Breadcrumb */}
         <nav className="mb-8 flex items-center gap-1.5 text-xs text-[#999]">

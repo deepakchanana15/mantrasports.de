@@ -3,10 +3,10 @@ import type { NavItem } from '@/types'
 // ─── Core Site Configuration ─────────────────────────────────────────────────
 export const SITE_CONFIG = {
   name: 'Mantra Sports DE',
-  tagline: 'Ohne Grenzen spielen.',
+  tagline: 'Performance. Got. Simplified.',
   description:
-    'Mantra Sports DE — Premium Cricketschläger, Schutzausrüstung, Bälle, Teamkleidung und Zubehör. Für Leistung gebaut. Weltweit vertraut.',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://mantrasports.de',
+    'Mantra Sports Deutschland — Großhandel und B2B-Lieferung von Premium-Cricketschlägern, Schutzausrüstung, Bällen, Performance-Sportbekleidung und Zubehör für Vereine, Akademien, Schulen und Händler.',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.mantrasports.de',
   locale: 'de-DE',
   region: 'de',
   currency: 'EUR',
@@ -14,9 +14,9 @@ export const SITE_CONFIG = {
 
   contact: {
     email: process.env.EMAIL_TO ?? 'info@mantrasports.de',
-    phone: 'TO_BE_PROVIDED',
+    phone: '+1 (385) 601-3759',
     address: 'TO_BE_PROVIDED',
-    whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? 'TO_BE_PROVIDED',
+    whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '+12679016382',
   },
 
   social: {
@@ -28,9 +28,9 @@ export const SITE_CONFIG = {
 
   seo: {
     titleTemplate: '%s | Mantra Sports DE',
-    defaultTitle: 'Mantra Sports DE — Premium Cricket Ausrüstung',
+    defaultTitle: 'Cricket-Ausrüstung Großhandel Deutschland | Mantra Sports',
     defaultDescription:
-      'Premium Cricketschläger, Schutzausrüstung, Teamkleidung und Zubehör bei Mantra Sports Deutschland. Großhandel & B2B-Anfragen willkommen.',
+      'Cricket-Großhandel für Vereine, Akademien, Schulen und Händler in Deutschland: Schläger aus englischer Weide, Pads, Handschuhe, Helme, Bälle und Performance-Sportbekleidung. Jetzt B2B-Angebot anfordern.',
     defaultOgImage: '/images/og-default.jpg',
     twitterHandle: '@mantrasports',
   },
@@ -63,8 +63,7 @@ export const MAIN_NAV: NavItem[] = [
       { label: 'Schutzausrüstung', href: '/categories/protective-gear' },
       { label: 'Bälle', href: '/categories/balls' },
       { label: 'Zubehör', href: '/categories/accessories' },
-      { label: 'Teamkleidung', href: '/categories/teamwear' },
-      { label: 'Individuelle Bekleidung', href: '/categories/custom-apparel' },
+      { label: 'Performance-Sportbekleidung', href: '/categories/custom-apparel' },
     ],
   },
   {
@@ -76,17 +75,11 @@ export const MAIN_NAV: NavItem[] = [
     href: '/wholesale',
     children: [
       { label: 'Großhandelsanfrage', href: '/wholesale' },
-      { label: 'B2B-Partnerschaften', href: '/b2b' },
-      { label: 'Händler werden', href: '/become-a-dealer' },
     ],
   },
   {
     label: 'Über uns',
     href: '/about',
-  },
-  {
-    label: 'Blog',
-    href: '/blog',
   },
   {
     label: 'Kontakt',
@@ -102,8 +95,7 @@ export const FOOTER_NAV = {
       { label: 'Schutzausrüstung', href: '/categories/protective-gear' },
       { label: 'Bälle', href: '/categories/balls' },
       { label: 'Zubehör', href: '/categories/accessories' },
-      { label: 'Teamkleidung', href: '/categories/teamwear' },
-      { label: 'Individuelle Bekleidung', href: '/categories/custom-apparel' },
+      { label: 'Performance-Sportbekleidung', href: '/categories/custom-apparel' },
     ],
   },
   company: {
@@ -111,9 +103,6 @@ export const FOOTER_NAV = {
     links: [
       { label: 'Über uns', href: '/about' },
       { label: 'Großhandel', href: '/wholesale' },
-      { label: 'B2B-Partnerschaften', href: '/b2b' },
-      { label: 'Händler werden', href: '/become-a-dealer' },
-      { label: 'Blog', href: '/blog' },
       { label: 'Kontakt', href: '/contact' },
     ],
   },
@@ -121,9 +110,8 @@ export const FOOTER_NAV = {
     title: 'Hilfe & Support',
     links: [
       { label: 'FAQ', href: '/faq' },
-      { label: 'Versandrichtlinien', href: '/shipping-policy' },
-      { label: 'Rückgaberichtlinien', href: '/returns-policy' },
-      { label: 'Datenschutz', href: '/privacy-policy' },
+      { label: 'AGB', href: '/terms-and-conditions' },
+      { label: 'Impressum', href: '/impressum' },
       { label: 'AGB', href: '/terms-and-conditions' },
       { label: 'Sitemap', href: '/sitemap.xml' },
     ],
@@ -146,12 +134,12 @@ export const DEFAULT_CATEGORIES = [
 export const DEFAULT_SITE_SETTINGS = {
   hero_image_url: '',
   site_name: 'Mantra Sports DE',
-  site_tagline: 'Ohne Grenzen spielen.',
+  site_tagline: 'Performance. Got. Simplified.',
   site_description: SITE_CONFIG.description,
   contact_email: 'info@mantrasports.de',
-  contact_phone: 'TO_BE_PROVIDED',
+  contact_phone: '+1 (385) 601-3759',
   contact_address: 'TO_BE_PROVIDED',
-  whatsapp_number: 'TO_BE_PROVIDED',
+  whatsapp_number: '+12679016382',
   social_instagram: '',
   social_facebook: '',
   social_linkedin: '',
