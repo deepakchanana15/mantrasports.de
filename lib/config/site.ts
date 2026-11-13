@@ -30,7 +30,7 @@ export const SITE_CONFIG = {
     titleTemplate: '%s | Mantra Sports DE',
     defaultTitle: 'Cricket-Ausrüstung Großhandel Deutschland | Mantra Sports',
     defaultDescription:
-      'Cricket-Großhandel für Vereine, Akademien, Schulen und Händler in Deutschland: Schläger aus englischer Weide, Pads, Handschuhe, Helme, Bälle und Performance-Sportbekleidung. Jetzt B2B-Angebot anfordern.',
+      'Cricket-Großhandel für Vereine, Akademien, Schulen und Händler in Deutschland: Schläger aus englischer Weide, Schutzausrüstung und Bälle. Angebot anfordern.',
     defaultOgImage: '/images/og-default.jpg',
     twitterHandle: '@mantrasports',
   },
