@@ -84,7 +84,7 @@ export function Footer() {
             className="mb-6 max-w-[280px] text-[14px] leading-relaxed"
             style={{ color: '#A0A0A0' }}
           >
-            Premium Cricketschläger, Schutzausrüstung, Teamkleidung und Zubehör.
+            Cricketschläger, Schutzausrüstung, Performance-Sportbekleidung und Zubehör im Großhandel für Vereine und Händler.
             Leistung für Champions auf jedem Level.
           </p>
 
@@ -234,7 +234,6 @@ export function Footer() {
           {/* Legal mini-links */}
           <div className="flex items-center gap-4">
             {[
-              { label: 'Datenschutz', href: '/privacy-policy' },
               { label: 'AGB', href: '/terms-and-conditions' },
               { label: 'Impressum', href: '/impressum' },
             ].map((item) => (

@@ -84,29 +84,24 @@ const CATEGORIES = [
   { name: 'Schutzausrüstung', slug: 'protective-gear', emoji: '🛡️', href: '/categories/protective-gear' },
   { name: 'Handschuhe', slug: 'accessories', emoji: '🧤', href: '/categories/accessories' },
   { name: 'Sporttaschen', slug: 'sports-bags', emoji: '🎒', href: '/categories/sports-bags' },
-  { name: 'Individuelle Bekleidung', slug: 'custom-apparel', emoji: '👕', href: '/categories/custom-apparel' },
+  { name: 'Performance-Sportbekleidung', slug: 'custom-apparel', emoji: '👕', href: '/categories/custom-apparel' },
 ]
 
 const TRUST_ITEMS = [
-  { icon: Truck, text: 'Kostenloser Versand ab €100' },
-  { icon: ShieldCheck, text: 'Sichere Zahlung & Datenschutz' },
-  { icon: RefreshCw, text: '30 Tage Rückgaberecht' },
-  { icon: Award, text: 'Authentische Premium-Qualität' },
-  { icon: Headphones, text: 'Persönlicher Kundenservice' },
+  { icon: Truck, text: 'Mengen- & Vereinsbestellungen' },
+  { icon: ShieldCheck, text: 'Ersatz bei Herstellungsfehlern' },
+  { icon: RefreshCw, text: 'Angebot innerhalb 1 Werktag' },
+  { icon: Award, text: 'Echte englische Weide' },
+  { icon: Headphones, text: 'Echte Menschen, echte Hilfe' },
 ]
 
 const WHY_ITEMS = [
   { icon: Award, title: 'Premium Qualität', text: 'Jeder Schläger handgefertigt aus dem besten englischen Weidenholz. Handwerkskunst, die du auf dem Spielfeld spürst.' },
   { icon: Package, title: 'Großhandel & B2B', text: 'Flexible Großhandelspreise für Vereine, Schulen und Händler. Partnerschaft, die skaliert.' },
-  { icon: Truck, title: 'EU-weiter Versand', text: 'Schnelle Lieferung in alle EU-Länder. Kostenloser Versand ab €100 Bestellwert.' },
+  { icon: Truck, title: 'Für Großbestellungen gemacht', text: 'Angebote für Vereine, Schulen, Akademien und Händler, die ein ganzes Team ausstatten – inklusive Größenberatung vorab.' },
   { icon: Headphones, title: 'Expertenberatung', text: 'Unser Expertenteam hilft dir, die perfekte Ausrüstung für dein Spielniveau zu finden.' },
 ]
 
-const REVIEWS = [
-  { name: 'Rahul M.', location: 'München, DE', rating: 5, text: 'Absolut beeindruckende Qualität! Der Magnitude Legend schlägt sich wie ein Profigerät. Lieferung war schnell und die Verpackung perfekt. Klare Empfehlung!', product: 'Magnitude Legend Schläger' },
-  { name: 'Priya S.', location: 'Berlin, DE', rating: 5, text: 'Endlich eine deutsche Anlaufstelle für Cricket! Die Raptor Handschuhe passen perfekt und die Qualität ist auf Weltklasse-Niveau. Werde definitiv wieder bestellen.', product: 'Raptor Batting Handschuhe' },
-  { name: 'Arjun K.', location: 'Frankfurt, DE', rating: 5, text: 'Als Vereinskapitän bestelle ich regelmäßig für unser Team. Mantra Sports DE ist zuverlässig, die Großhandelspreise sind fair und der Service ist top.', product: 'Teambestellung — Schutzausrüstung' },
-]
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -276,7 +271,7 @@ export function HomePageClient({ heroImageUrl, heroProduct, willowImageUrl, cate
   function getTabCards(tab: string): CardProduct[] {
     const dbList = tabProducts[tab as keyof typeof tabProducts]
     if (dbList && dbList.length > 0) return dbList.map((p) => dbToCard(p, tab))
-    return PLACEHOLDER_PRODUCTS.filter((p) => p.tab === tab).map(placeholderToCard)
+    return []
   }
 
   const filteredProducts = getTabCards(activeTab)
@@ -296,15 +291,15 @@ export function HomePageClient({ heroImageUrl, heroProduct, willowImageUrl, cate
         {/* Left — Text */}
         <div className="flex flex-col justify-center" style={{ padding: '80px 60px 80px 80px', borderRight: '1px solid #E0DFDB' }}>
           <span className="mb-7 inline-flex items-center gap-2 self-start rounded-[2px] px-[14px] py-[6px] font-display text-[11px] font-semibold uppercase tracking-[0.18em] text-white" style={{ background: '#e85d1a' }}>
-            🏏 Neu in Deutschland
+            🏏 B2B &amp; Großhandel · Deutschland
           </span>
 
           <h1 id="hero-heading" className="mb-6 font-display font-bold uppercase leading-[0.93] tracking-[-0.01em]" style={{ fontSize: 'clamp(52px, 7vw, 88px)', color: '#111111' }}>
-            OHNE <span style={{ color: '#e85d1a' }}>GRENZEN</span><br />SPIELEN
+            PERFORMANCE. GOT. <span style={{ color: '#e85d1a' }}>SIMPLIFIED.</span>
           </h1>
 
           <p className="mb-10 max-w-[420px] text-[16px] font-light leading-[1.7]" style={{ color: '#6B6B6B' }}>
-            Premium Cricketschläger, Schutzausrüstung und Teamkleidung — direkt nach Deutschland geliefert. Vertraut von Spielern in ganz Europa.
+            Cricketschläger, Schutzausrüstung und Performance-Sportbekleidung im Großhandel für Vereine, Akademien, Schulen und Händler. Sagen Sie uns, was Ihr Team braucht – wir schicken ein Angebot.
           </p>
 
           <div className="mb-14 flex flex-wrap gap-3">
@@ -321,7 +316,7 @@ export function HomePageClient({ heroImageUrl, heroProduct, willowImageUrl, cate
           </div>
 
           <div className="flex" style={{ borderTop: '1px solid #E0DFDB' }}>
-            {[{ num: '500+', label: 'Kunden' }, { num: '50+', label: 'Produkte' }, { num: 'EU-weit', label: 'Lieferung' }].map((stat, i) => (
+            {[{ num: 'B2B', label: 'Nur Großhandel' }, { num: 'Players’–Gr III', label: 'Englische Weide' }, { num: 'Mengen', label: 'Vereinspreise' }].map((stat, i) => (
               <div key={stat.num} className="flex-1 pt-6" style={{ borderRight: i < 2 ? '1px solid #E0DFDB' : 'none', paddingRight: i < 2 ? '24px' : '0', paddingLeft: i > 0 ? '24px' : '0' }}>
                 <div className="font-display text-[32px] font-semibold leading-none" style={{ color: '#e85d1a' }}>{stat.num}</div>
                 <div className="mt-1 text-[11px] font-medium uppercase tracking-[0.12em]" style={{ color: '#6B6B6B' }}>{stat.label}</div>
@@ -535,7 +530,7 @@ export function HomePageClient({ heroImageUrl, heroProduct, willowImageUrl, cate
               Gefertigt aus dem feinsten englischen Weidenholz — jeder Schläger ein Unikat. Handpicked grain, handcrafted blade, professional performance.
             </p>
             <ul className="mb-8 space-y-3">
-              {['Englisches Weidenholz Klasse I–III', 'Handgefertigte Klingenverarbeitung', 'Professionell aufgeklopft & ölgetränkt', 'Individuelle Gewichts- und Grip-Auswahl'].map((feat) => (
+              {['Englisches Weidenholz Players’ Grade bis Grade III', 'Handgefertigte Klingenverarbeitung', 'Professionell aufgeklopft & ölgetränkt', 'Individuelle Gewichts- und Grip-Auswahl'].map((feat) => (
                 <li key={feat} className="flex items-start gap-3 text-[14px]" style={{ color: '#A0A0A0' }}>
                   <ChevronRight className="mt-0.5 h-4 w-4 shrink-0" style={{ color: '#e85d1a' }} />{feat}
                 </li>
@@ -568,30 +563,6 @@ export function HomePageClient({ heroImageUrl, heroProduct, willowImageUrl, cate
               </div>
               <h3 className="mb-3 font-display text-[18px] font-semibold uppercase tracking-[0.04em]" style={{ color: '#111111' }}>{item.title}</h3>
               <p className="text-[14px] leading-relaxed" style={{ color: '#6B6B6B' }}>{item.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
-          REVIEWS
-      ══════════════════════════════════════════════════════════════ */}
-      <section aria-labelledby="reviews-heading" style={{ padding: '80px 60px', background: '#F8F7F4', borderBottom: '1px solid #E0DFDB' }}>
-        <div className="mb-12 text-center">
-          <p className="mb-2 font-display text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: '#e85d1a' }}>Kundenstimmen</p>
-          <h2 id="reviews-heading" className="font-display font-bold uppercase leading-tight tracking-[0.01em]" style={{ fontSize: 'clamp(34px, 4vw, 52px)', color: '#111111' }}>Was unsere Kunden sagen</h2>
-        </div>
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', border: '1px solid #E0DFDB' }}>
-          {REVIEWS.map((review, i) => (
-            <div key={review.name} className="flex flex-col bg-white" style={{ padding: '36px 32px', borderRight: i < REVIEWS.length - 1 ? '1px solid #E0DFDB' : 'none' }}>
-              <Quote className="mb-4 h-8 w-8" style={{ color: '#E0DFDB' }} aria-hidden="true" />
-              <div className="mb-4"><StarRating rating={review.rating} /></div>
-              <p className="mb-6 flex-1 text-[14px] leading-[1.75]" style={{ color: '#333333' }}>"{review.text}"</p>
-              <div style={{ borderTop: '1px solid #F2F1EE', paddingTop: '16px' }}>
-                <p className="font-display text-[15px] font-semibold uppercase tracking-[0.04em]" style={{ color: '#111111' }}>{review.name}</p>
-                <p className="text-[12px]" style={{ color: '#6B6B6B' }}>{review.location}</p>
-                <p className="mt-1 text-[11px] font-medium uppercase tracking-wider" style={{ color: '#e85d1a' }}>{review.product}</p>
-              </div>
             </div>
           ))}
         </div>

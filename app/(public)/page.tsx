@@ -4,9 +4,9 @@ import { HomePageClient } from '@/components/home/HomePageClient'
 import type { CategoryDisplay, ProductDisplay, HeroProduct } from '@/components/home/HomePageClient'
 
 export const metadata: Metadata = {
-  title: 'Mantra Sports DE — Premium Cricket Ausrüstung',
+  title: { absolute: 'Cricket-Ausrüstung Großhandel Deutschland | Mantra Sports' },
   description:
-    'Premium Cricketschläger, Schutzausrüstung, Teamkleidung und Zubehör bei Mantra Sports Deutschland. Großhandel & B2B-Anfragen willkommen.',
+    'Cricket-Großhandel für Vereine, Akademien, Schulen und Händler in Deutschland: Schläger aus englischer Weide, Schutzausrüstung und Bälle. Angebot anfordern.',
 }
 
 function toDisplay(p: {

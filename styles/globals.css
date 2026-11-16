@@ -78,12 +78,14 @@
 }
 
 /* ── Base Reset ──────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 html {
@@ -222,4 +224,40 @@ img, video {
   pointer-events: none;
   float: left;
   height: 0;
+}
+
+/* ── Mobile layout (sitewide) ───────────────────────────────────
+   Pages use inline desktop grids/paddings; inline styles can only be
+   overridden with !important, so these rules adapt them under 768px. */
+@media (max-width: 767px) {
+  html, body { overflow-x: clip; }
+
+  /* Two-column layouts (hero, feature, product detail, forms, contact) → stack */
+  [style*="1fr 1fr"],
+  [style*="1fr 1.2fr"],
+  [style*="1fr 1.3fr"] { grid-template-columns: 1fr !important; }
+
+  /* Category / feature tiles → 2 per row */
+  [style*="repeat(6"],
+  [style*="repeat(4"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  [style*="repeat(3"] { grid-template-columns: 1fr !important; }
+
+  /* Product & collection grids → 2 per row, collections 1 per row */
+  [style*="minmax(240px"],
+  [style*="minmax(220px"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px !important; }
+  [style*="minmax(340px"] { grid-template-columns: 1fr !important; }
+
+  /* Footer columns */
+  [style*="2fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+
+  /* Wide desktop side padding (60px / 80px) → 20px */
+  [style*="padding"][style*="60px"],
+  [style*="padding"][style*="80px"] { padding-left: 20px !important; padding-right: 20px !important; }
+
+  /* Hero */
+  #hero-heading { font-size: 44px !important; line-height: 0.95 !important; }
+  section[aria-labelledby="hero-heading"] { min-height: auto !important; }
+  section[aria-labelledby="hero-heading"] > div:first-child { border-right: none !important; padding-top: 48px !important; padding-bottom: 48px !important; }
+  section[aria-labelledby="hero-heading"] > div:nth-child(2) { min-height: 360px; }
+  section[aria-labelledby="hero-heading"] .font-display.text-\[32px\] { font-size: 22px !important; }
 }

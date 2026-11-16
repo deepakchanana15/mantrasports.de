@@ -140,7 +140,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
               >
                 Alle
               </Link>
-              {(categories.length > 0 ? categories : Array.from(DEFAULT_CATEGORIES)).map((cat) => (
+              {(categories.length > 0 ? categories : Array.from(DEFAULT_CATEGORIES)).filter((cat) => cat.slug !== 'teamwear').map((cat) => (
                 <Link
                   key={cat.slug}
                   href={buildUrl({ category: cat.slug, sort, q })}
