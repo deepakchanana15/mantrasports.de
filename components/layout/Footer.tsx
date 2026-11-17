@@ -236,6 +236,7 @@ export function Footer() {
             {[
               { label: 'AGB', href: '/terms-and-conditions' },
               { label: 'Impressum', href: '/impressum' },
+              { label: 'Datenschutz', href: '/datenschutz' },
             ].map((item) => (
               <Link
                 key={item.label}

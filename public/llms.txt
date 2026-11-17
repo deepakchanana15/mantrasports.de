@@ -27,3 +27,4 @@
 - Contact: https://www.mantrasports.de/contact
 - Impressum: https://www.mantrasports.de/impressum
 - Terms (AGB): https://www.mantrasports.de/terms-and-conditions
+- Datenschutz (privacy policy): https://www.mantrasports.de/datenschutz

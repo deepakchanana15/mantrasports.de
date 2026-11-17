@@ -19,6 +19,7 @@ export default function ImpressumPage() {
           paragraphs: [
             'Mantra Corporation Pty Ltd',
             'Unit 2, 5 Ford Court, Newnham TAS 7248, Australien',
+            'Vertreten durch: Madhur Shastri (Director)',
             'Australian Business Number (ABN): 13 675 757 838',
             'Die Mantra Corporation Pty Ltd ist eine in Australien eingetragene Gesellschaft. In Deutschland besteht keine Niederlassung.',
           ],
@@ -27,8 +28,7 @@ export default function ImpressumPage() {
           title: 'Kontakt',
           paragraphs: [
             'E-Mail: support@mantrasports.com.au',
-            'Telefon: +1 (385) 601-3759',
-            'WhatsApp: +1 (267) 901-6382',
+            'Telefon: +61 466 242 222',
           ],
         },
         {
