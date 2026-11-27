@@ -3,27 +3,24 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { X } from 'lucide-react'
-
-const COOKIE_KEY = 'mantra_cookie_consent'
+import { GOOGLE_TAG_ID, OPEN_CONSENT_EVENT, readConsent, saveConsent } from '@/lib/analytics/consent'
 
 export function CookieBanner() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    // Only show if no decision has been made yet
-    try {
-      if (!localStorage.getItem(COOKIE_KEY)) setVisible(true)
-    } catch {
-      setVisible(true)
-    }
+    // Without an analytics ID there is nothing optional to consent to
+    if (!GOOGLE_TAG_ID) return
+
+    // Show if no decision has been made yet, and whenever the footer link asks
+    if (!readConsent()) setVisible(true)
+    const open = () => setVisible(true)
+    window.addEventListener(OPEN_CONSENT_EVENT, open)
+    return () => window.removeEventListener(OPEN_CONSENT_EVENT, open)
   }, [])
 
   const save = (value: 'accepted' | 'denied') => {
-    try {
-      localStorage.setItem(COOKIE_KEY, value)
-    } catch {
-      // private browsing — ignore
-    }
+    saveConsent(value === 'accepted')
     setVisible(false)
   }
 
@@ -60,10 +57,13 @@ export function CookieBanner() {
         <div style={{ flex: 1, minWidth: '260px' }}>
           <p style={{ margin: 0, fontSize: '13px', lineHeight: 1.6, color: '#cccccc' }}>
             🍪{' '}
-            <strong style={{ color: '#ffffff' }}>Wir verwenden Cookies</strong>, um dein Erlebnis auf unserer Website zu verbessern.
-            Einige sind technisch notwendig, andere helfen uns, die Nutzung zu verstehen.{' '}
+            <strong style={{ color: '#ffffff' }}>Darf Google Analytics mitzählen?</strong>{' '}
+            Mit deiner Einwilligung nutzen wir Google Analytics, um zu verstehen, wie unsere Website genutzt wird.
+            Dabei werden Cookies gesetzt und Nutzungsdaten an Google (auch in die USA) übermittelt.
+            Ohne Einwilligung bleiben Analyse-Cookies aus. Du kannst deine Wahl jederzeit über
+            „Cookie-Einstellungen“ im Footer ändern.{' '}
             <Link
-              href="/privacy-policy"
+              href="/datenschutz"
               style={{ color: '#e85d1a', textDecoration: 'underline', whiteSpace: 'nowrap' }}
             >
               Datenschutzerklärung
@@ -130,7 +130,7 @@ export function CookieBanner() {
               e.currentTarget.style.borderColor = '#e85d1a'
             }}
           >
-            Alle akzeptieren
+            Akzeptieren
           </button>
 
           {/* Dismiss X */}

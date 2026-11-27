@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Instagram, Facebook, Youtube, Linkedin, Mail, ChevronRight } from 'lucide-react'
 import { FOOTER_NAV, SITE_CONFIG } from '@/lib/config/site'
+import { openConsentSettings } from '@/lib/analytics/consent'
 
 function XIcon({ className }: { className?: string }) {
   return (
@@ -249,6 +250,16 @@ export function Footer() {
                 {item.label}
               </Link>
             ))}
+            <button
+              type="button"
+              onClick={openConsentSettings}
+              className="text-[12px] transition-colors"
+              style={{ color: '#6B6B6B', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#e85d1a' }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = '#6B6B6B' }}
+            >
+              Cookie-Einstellungen
+            </button>
           </div>
         </div>
       </div>

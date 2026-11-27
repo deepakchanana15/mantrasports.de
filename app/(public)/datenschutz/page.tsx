@@ -47,30 +47,40 @@ export default function DatenschutzPage() {
         {
           title: '5. Cookies und lokale Speicherung',
           paragraphs: [
-            'Wir setzen keine Analyse-, Tracking- oder Werbe-Cookies ein. Im lokalen Speicher Ihres Browsers speichern wir lediglich Ihre Auswahl im Cookie-Hinweis und Ihre bevorzugte Darstellung (hell oder dunkel). Diese Informationen verlassen Ihr Gerät nicht. Rechtsgrundlage ist § 25 Abs. 2 TDDDG (technisch erforderlich bzw. von Ihnen ausdrücklich gewünscht).',
+            'Im lokalen Speicher Ihres Browsers speichern wir Ihre Auswahl im Cookie-Hinweis und Ihre bevorzugte Darstellung (hell oder dunkel). Diese Informationen verlassen Ihr Gerät nicht. Rechtsgrundlage ist § 25 Abs. 2 TDDDG (technisch erforderlich bzw. von Ihnen ausdrücklich gewünscht).',
+            'Analyse-Cookies setzen wir nur, wenn Sie im Cookie-Hinweis einwilligen (siehe Abschnitt 6). Werbe-Cookies setzen wir nicht. Ihre Auswahl können Sie jederzeit über den Link „Cookie-Einstellungen“ im Footer der Website ändern oder widerrufen.',
           ],
         },
         {
-          title: '6. WhatsApp',
+          title: '6. Webanalyse mit Google Analytics',
+          paragraphs: [
+            'Sofern Sie eingewilligt haben, nutzen wir Google Analytics 4, eingebunden über den Google Tag Manager. Anbieter ist die Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Google Analytics hilft uns zu verstehen, wie Besucher unsere Website nutzen (zum Beispiel aufgerufene Seiten, Verweildauer, ungefähre Herkunft nach Land und Stadt, verwendetes Gerät und Browser), damit wir unser Angebot verbessern können.',
+            'Dazu werden Cookies (_ga, _ga_*) auf Ihrem Gerät gespeichert, die eine pseudonyme Kennung enthalten. Google Analytics 4 speichert keine vollständigen IP-Adressen. Google-Signale und personalisierte Werbung sind deaktiviert. Die Daten werden nach 14 Monaten gelöscht; die Cookies laufen nach spätestens zwei Jahren ab.',
+            'Wir nutzen den Einwilligungsmodus (Consent Mode v2) von Google. Ohne Ihre Einwilligung wird der Google Tag Manager nicht geladen und es werden keine Daten an Google übermittelt.',
+            'Rechtsgrundlage ist Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO und § 25 Abs. 1 TDDDG. Sie können sie jederzeit mit Wirkung für die Zukunft über „Cookie-Einstellungen“ im Footer widerrufen; die Analyse-Cookies werden dann gelöscht. Dabei können Daten an die Google LLC in den USA übermittelt werden. Google LLC ist nach dem EU-US Data Privacy Framework zertifiziert. Weitere Informationen: https://policies.google.com/privacy',
+          ],
+        },
+        {
+          title: '7. WhatsApp',
           paragraphs: [
             'Auf der Website verlinken wir auf WhatsApp. Erst wenn Sie den Link anklicken, wird WhatsApp (WhatsApp Ireland Limited / Meta) geöffnet; dabei gelten die Datenschutzbestimmungen von WhatsApp. Wenn Sie uns über WhatsApp schreiben, verarbeiten wir Ihre Nachricht und Telefonnummer zur Beantwortung Ihrer Anfrage (Art. 6 Abs. 1 lit. b bzw. f DSGVO).',
           ],
         },
         {
-          title: '7. Empfänger und Übermittlung in Drittländer',
+          title: '8. Empfänger und Übermittlung in Drittländer',
           paragraphs: [
             'Wir setzen die genannten Dienstleister als Auftragsverarbeiter ein. Die Mantra Corporation Pty Ltd hat ihren Sitz in Australien; Ihre Anfrage wird daher dort bearbeitet. Für Australien besteht kein Angemessenheitsbeschluss der EU-Kommission. Die Übermittlung Ihrer Anfrage dorthin erfolgt, weil sie zur Durchführung vorvertraglicher Maßnahmen auf Ihren Antrag erforderlich ist (Art. 49 Abs. 1 lit. b DSGVO).',
             'Für Dienstleister in den USA erfolgt die Übermittlung auf Grundlage des EU-US Data Privacy Framework, soweit der Anbieter zertifiziert ist, und im Übrigen auf Grundlage von EU-Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO).',
           ],
         },
         {
-          title: '8. Speicherdauer',
+          title: '9. Speicherdauer',
           paragraphs: [
             'Anfragen speichern wir, solange es für die Bearbeitung und eine mögliche Geschäftsbeziehung erforderlich ist, und löschen sie spätestens drei Jahre nach dem letzten Kontakt, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen. Newsletter-Daten speichern wir bis zum Widerruf Ihrer Einwilligung. Server-Logdaten werden vom Hoster nach kurzer Zeit automatisch gelöscht.',
           ],
         },
         {
-          title: '9. Ihre Rechte',
+          title: '10. Ihre Rechte',
           paragraphs: [
             'Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21). Eine erteilte Einwilligung können Sie jederzeit widerrufen (Art. 7 Abs. 3).',
             'Sie haben außerdem das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren, insbesondere in dem Mitgliedstaat Ihres Aufenthaltsorts.',
@@ -78,7 +88,7 @@ export default function DatenschutzPage() {
           ],
         },
         {
-          title: '10. Keine automatisierte Entscheidungsfindung',
+          title: '11. Keine automatisierte Entscheidungsfindung',
           paragraphs: [
             'Wir nutzen keine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne von Art. 22 DSGVO. Die Bereitstellung Ihrer Daten ist freiwillig; ohne Kontaktdaten können wir Ihre Anfrage jedoch nicht beantworten.',
           ],
