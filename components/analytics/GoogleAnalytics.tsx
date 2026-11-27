@@ -36,6 +36,14 @@ function initGtag() {
     security_storage: 'granted',
   })
   window.gtag('set', 'ads_data_redaction', true)
+}
+
+// The 'js' command starts the container and fires its page view, so it must
+// come after the consent update — otherwise the first hit is sent as denied.
+let started = false
+function startTag() {
+  if (started) return
+  started = true
   window.gtag('js', new Date())
 }
 
@@ -63,6 +71,7 @@ export function GoogleAnalytics() {
         analytics_storage: allowed ? 'granted' : 'denied',
       })
       if (allowed) {
+        startTag()
         setGranted(true)
       } else {
         clearAnalyticsCookies()
